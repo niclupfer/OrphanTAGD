@@ -59,9 +59,10 @@ public class Player : MonoBehaviour
         moveHorizontal = Input.GetAxis("Horizontal");
         moveVertical = Input.GetAxis("Vertical");
 
-        lookVector = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        var speedVector = new Vector3(moveHorizontal, 0.0f, moveVertical);
+		lookVector = transform.forward;
 
-        lookMagnitude = lookVector.magnitude;
+		lookMagnitude = speedVector.magnitude;
         walking = false;
         running = false;
         sprinting = false;
@@ -129,14 +130,14 @@ public class Player : MonoBehaviour
             }
             */
 
-
-        var vel = (directionVector * speed * speedMod);
+		// = lookVector;
+		var vel = (directionVector * speed * speedMod);
         rb.velocity = vel;
 
 
         // set rotation to direction of intended movement
-        if (lookVector.magnitude > 0.1f)
-                transform.rotation = Quaternion.LookRotation(lookVector);
+        //if (lookVector.magnitude > 0.1f)
+           //     transform.rotation = Quaternion.LookRotation(lookVector);
 
             //rb.rotation = Quaternion.LookRotation(Vector3.Lerp(transform.rotation.eulerAngles, directionVector, 1f));
         

@@ -32,16 +32,17 @@ public class FollowCamera : MonoBehaviour
         //moveHoriz = Input.GetAxis("RightHorizontal");
         //moveVert = Input.GetAxis("RightVertical");
 
-        y += Input.GetAxis("RightVertical") * speed * 0.02f;
-        x += Input.GetAxis("RightHorizontal") * speed * 0.02f;
+        //y += Input.GetAxis("RightVertical") * speed * 0.02f;
+        //x += Input.GetAxis("RightHorizontal") * speed * 0.02f;
 
         //y = ClampAngle(y, yMinLimit, yMaxLimit);
 
-        Quaternion rotation = Quaternion.Euler(y, x, 0f);
-        transform.rotation = rotation;
-        Vector3 position = rotation * new Vector3(offset.x, offset.y, -dist) + target.position;
-
+        //Quaternion rotation = Quaternion.Euler(y, x, 0f);
+        //transform.rotation = rotation;
+        //Vector3 position = rotation * new Vector3(offset.x, offset.y, -dist) + target.position;
+		Vector3 position = new Vector3(offset.x, offset.y, -dist) + target.position;
         transform.position = position;
+
 
     }
 
