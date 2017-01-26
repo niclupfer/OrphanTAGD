@@ -132,7 +132,8 @@ public class Player : MonoBehaviour
 
 		// = lookVector;
 		var vel = (directionVector * speed * speedMod);
-        rb.velocity = vel;
+        //rb.velocity = vel;
+		rb.velocity = (new Vector3(moveHorizontal, 0.0f, moveVertical) * speed);
 
 
         // set rotation to direction of intended movement
