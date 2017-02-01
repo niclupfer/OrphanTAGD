@@ -1,32 +1,47 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
+
+public class Street
+{
+    public string direction;
+    public Vector3 start;
+    public Vector3 end;
+}
 
 public class DumbCityGenerator : MonoBehaviour {
 
 	public GameObject asphaltObj;
 	public GameObject sidewalkObj;
 	public GameObject buildingObj;
+    public GameObject carObj;
 
 	public float blockSize;
 
 	public int blocksWide;
 
+    public float streetPadding;
+    public float intersectionPadding;
 	public float buildingPadding;
 
 	public Vector3 minBuildingSize;
 	public Vector3 maxBuildingSize;
+    
+    List<Street> streets;
 
-	public float minAlleyWidth;
-
+    List<GameObject> cars;
 
 	void Start ()
 	{
 	
 		GenerateBlockGrid (blocksWide);
+
+        GenerateCars(40);
 	}
 
 	void GenerateBlockGrid (int blocksWide)
 	{
+        streets = new List<Street>();
+
 		var startPoint = ((blocksWide / 2) * -blockSize)  + blockSize/2;
 
 		for (var x = 0; x < blocksWide; x++)
@@ -101,10 +116,65 @@ public class DumbCityGenerator : MonoBehaviour {
 			buildingPadding - (width / 2),
 			(height / 2),
 			buildingPadding - (depth / 2));
-		
-	}
 
-	void Update ()
+        // set street info
+        var northStreet = new Street();
+        northStreet.direction = "east";
+        northStreet.start = new Vector3(x - streetPadding + intersectionPadding, 0f, z - streetPadding);
+        northStreet.end = new Vector3(x + streetPadding - intersectionPadding, 0f, z - streetPadding);
+        streets.Add(northStreet);
+
+        var southStreet = new Street();
+        southStreet.direction = "west";
+        southStreet.start = new Vector3(x + streetPadding - intersectionPadding, 0f, z + streetPadding);
+        southStreet.end = new Vector3(x - streetPadding + intersectionPadding, 0f, z + streetPadding);
+        streets.Add(southStreet);
+
+        var eastStreet = new Street();
+        eastStreet.direction = "south";
+        eastStreet.start = new Vector3(x + streetPadding, 0f, z - streetPadding + intersectionPadding);
+        eastStreet.end = new Vector3(x + streetPadding, 0f, z + streetPadding - intersectionPadding);
+        streets.Add(eastStreet);
+
+        var westStreet = new Street();
+        westStreet.direction = "north";
+        westStreet.start = new Vector3(x - streetPadding, 0f, z + streetPadding - intersectionPadding);
+        westStreet.end = new Vector3(x - streetPadding, 0f, z - streetPadding + intersectionPadding);
+        streets.Add(westStreet);
+
+    }
+
+    void GenerateCars(int numCars)
+    {
+        cars = new List<GameObject>();
+
+        var carHolder = new GameObject("Cars");
+        carHolder.transform.parent = transform;
+
+        for (var i = 0; i < streets.Count; i++)
+        {
+            var car = Instantiate(carObj);
+            car.transform.parent = carHolder.transform;
+            car.transform.localPosition = new Vector3(
+            streets[i].start.x,
+            1f,
+            streets[i].start.z);
+            cars.Add(car);
+        }
+        
+    }
+
+    public Street GetStreetWithStart(Vector3 startPos)
+    {
+        foreach(var street in streets)
+        {
+            if (street.start == startPos)
+                return street;
+        }
+        return null;
+    }
+
+    void Update ()
 	{
 	
 	}
