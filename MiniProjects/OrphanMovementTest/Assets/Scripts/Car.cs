@@ -44,7 +44,7 @@ public class Car : MonoBehaviour {
             // TODO - wait
 
             // chose a turn
-            var newDirection = ChooseTurn();
+            //var newDirection = ChooseTurn();
         }
         else
         {
