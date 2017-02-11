@@ -2,9 +2,8 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-
-
-	public float speed;
+    
+    public float speed;
 	private float speedMod = 1f;
 
 	private Rigidbody rb;
@@ -25,7 +24,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Update ()
 	{
-		moveSideways = Input.GetAxis("Horizontal");
+        moveSideways = Input.GetAxis("Horizontal");
 		moveForward = Input.GetAxis("Vertical");
 
 		speedMod = 1f;
@@ -46,14 +45,25 @@ public class PlayerController : MonoBehaviour {
 		anim.SetBool ("Hiding", hiding);
 
 
-	}
+        Debug.DrawRay(transform.position, Camera.main.transform.position, Color.cyan);
+    }
 
 	void FixedUpdate()
 	{
 		rb.angularVelocity = Vector3.zero;
 
-		var moveF = transform.forward * moveForward * speed * speedMod * Time.deltaTime;
-		var moveS = transform.right * moveSideways * speed * Time.deltaTime;
+        //var flatForward = new Vector3(transform.forward.x, 0f, transform.forward.z);
+        //var flatRight = new Vector3(transform.right.x, 0f, transform.right.z);
+
+
+        var flatForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z);
+        var flatRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z);
+
+        if (moveForward != 0 || moveSideways != 0)
+            transform.rotation = Quaternion.LookRotation(flatForward);
+
+        var moveF = flatForward * moveForward * speed * speedMod * Time.deltaTime;
+		var moveS = flatRight * moveSideways * speed * Time.deltaTime;
 
 		anim.SetFloat ("Speed", moveF.magnitude);
 
