@@ -3,23 +3,24 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class Hunger : MonoBehaviour {
+    GameObject HungryEmpty;
     static public float hunger = 100;
     public float hungerRate = 2;
-   // public float timerRate;
-    public float timer = 10.0f;
-
+   // public float timerRate; 
+    private void Start()
+    {
+        HungryEmpty = GameObject.Find("Hunger Empty");
+    }
+    // Update is called once per frame
+    
 	// Update is called once per frame
-	void Update () {
-        timer -= Time.deltaTime; 
-        if(timer < 0)
-        {
-            hunger -= hungerRate;
-            timer = 10.0f;
-        }
+	void Update () { 
+            hunger -= Time.deltaTime*hungerRate;
+            HungryEmpty.transform.Translate(-hungerRate, 0, 0);
+     
         if(hunger < 1)
         {
             hunger = 0;
         }
-        gameObject.GetComponent<Text>().text = "" + hunger.ToString();
 	}
 }
