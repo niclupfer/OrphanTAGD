@@ -13,7 +13,7 @@ public class Food : MonoBehaviour {
         float dist = Vector3.Distance(Player.transform.position, transform.position);
         if (dist < 4 && Input.GetKey(KeyCode.E))
         {
-            Hunger.hunger += 20;
+            //Hunger.hunger += 20;
             Destroy(gameObject);
         }
 	}

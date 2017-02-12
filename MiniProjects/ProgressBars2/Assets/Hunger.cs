@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Hunger : MonoBehaviour {
     GameObject HungryEmpty;
     static public float hunger = 100;
-    public float hungerRate = 2;
+    public float hungerRate;
    // public float timerRate; 
     private void Start()
     {
@@ -21,6 +21,7 @@ public class Hunger : MonoBehaviour {
         if(hunger < 1)
         {
             hunger = 0;
+            HungryEmpty.transform.Translate(0, 0, 0);
         }
 	}
 }
