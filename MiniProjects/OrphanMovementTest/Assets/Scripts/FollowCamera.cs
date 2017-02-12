@@ -76,9 +76,10 @@ public class FollowCamera : MonoBehaviour
 
         var zRotation = Quaternion.AngleAxis(_mouseAbsolute.x, transform.InverseTransformDirection(Vector3.up));
         transform.localRotation *= zRotation;
-        
 
-        Vector3 position = new Vector3(offset.x, offset.y, -dist*2) + target.position;
+        var tarPos = new Vector3(0f, 2f, 0f) + target.position;
+
+        Vector3 position = new Vector3(offset.x, offset.y, -dist * 2) + tarPos;// target.position ;
         //Vector3 position = new Vector3(offset.x, offset.y, -dist) + target.position;
         //transform.position = Vector3.Lerp(transform.position, position, smoothing * Time.deltaTime);
         transform.position = position;
@@ -86,13 +87,23 @@ public class FollowCamera : MonoBehaviour
         
 
         transform.position = RotatePointAroundPivot(transform.position,
-                                target.position,
+                                tarPos,//target.position,
                                 transform.localRotation);
 
-        Debug.DrawRay(transform.position, target.position, Color.red);
+        if(transform.position.y < 0.5f)
+        {
+            transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
+        }
+
+        //Debug.DrawLine(transform.position, tarPos, Color.red);
         //Debug.DrawRay(transform.position, target.position, Color.green);
 
+        // dbug stuff
+        //var flatPosition = new Vector3(transform.position.x, 0f, transform.position.z);
+        //flatDistance = (flatPosition - target.position).magnitude;
+
     }
+    public float flatDistance;
 
     void FixedUpdate()
     {

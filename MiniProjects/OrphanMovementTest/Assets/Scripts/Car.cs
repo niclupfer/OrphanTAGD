@@ -37,6 +37,7 @@ public class Car : MonoBehaviour {
 	
 	void Update ()
     {
+        /*
         if(transform.position == currentStreet.end)
         {
             // if its at the end of a street, stop, choose a direction, turn or go straight
@@ -52,7 +53,7 @@ public class Car : MonoBehaviour {
 
         }
 
-
+    */
 
     }
 }

@@ -15,6 +15,10 @@ public class PlayerController : MonoBehaviour {
 	public bool sprinting = false;
 	public bool hiding = false;
 
+    public GameObject dustObj;
+    public float dustInterval;
+    float lastDustTime;
+
 	void Start ()
 	{
 		anim = GetComponentInChildren<Animator>();
@@ -29,7 +33,7 @@ public class PlayerController : MonoBehaviour {
 
 		speedMod = 1f;
 
-		if (Input.GetKey (KeyCode.LeftShift)) {
+		if (Input.GetButton ("Sprint")) {
 			sprinting = true;
 			speedMod = 1.5f;
 		} else {
@@ -44,8 +48,9 @@ public class PlayerController : MonoBehaviour {
 		}
 		anim.SetBool ("Hiding", hiding);
 
-
-        Debug.DrawRay(transform.position, Camera.main.transform.position, Color.cyan);
+        if ((moveForward != 0 || moveSideways != 0) && lastDustTime + dustInterval < Time.time)
+            MakeDust();
+        
     }
 
 	void FixedUpdate()
@@ -69,4 +74,11 @@ public class PlayerController : MonoBehaviour {
 
 		rb.velocity = moveF + moveS;
 	}
+
+    void MakeDust()
+    {
+        var dust = Instantiate(dustObj);
+        dust.transform.position = transform.position;
+        lastDustTime = Time.time;
+    }
 }
