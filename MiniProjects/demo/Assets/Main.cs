@@ -16,10 +16,15 @@ public class Main : MonoBehaviour
 
 	public GameObject roadSectionObj;
 	public GameObject coastRoadSectionObj;
+    public GameObject buildingObj;
 
-	public Material lightGrayMaterial;
+    public Material lightGrayMaterial;
+    public Material darkGrayMaterial;
 
-   	void Awake ()
+    public Vector3 minBuildingSize;
+    public Vector3 maxBuildingSize;
+
+    void Awake ()
 	{
         _selector = GameObject.Find("Selector");
 
@@ -31,7 +36,7 @@ public class Main : MonoBehaviour
 
         new MapTexture(_textureScale).AttachTexture(GameObject.Find("Map"), _map);
 
-		PlaceRoads ();
+		//PlaceRoads ();
 
 		BuildBlocks ();
 	}
@@ -109,13 +114,16 @@ public class Main : MonoBehaviour
 		var blockObj = new GameObject ("Block");
 		blockObj.transform.parent = GameObject.Find ("Blocks").transform;
 
-		// build sidewalk mesh
+        var blockCenter = new Vector3(block.point.x * scale, 0f, block.point.y * scale);
 
-		Vector3[] Vertices = new Vector3[block.corners.Count + 1];
-		Vertices [0] = new Vector3 (block.point.x * scale, 0f, block.point.y * scale);
+        // build sidewalk mesh
+
+        Vector3[] Vertices = new Vector3[block.corners.Count + 1];
+		Vertices [0] = new Vector3 (0f, 0f, 0f);
 		for (var i = 0; i < block.corners.Count; i++) {
-			Vertices [i+1] = new Vector3 (block.corners[i].point.x * scale, 0f, block.corners[i].point.y * scale);
-			Vertices [i + 1] = Vector3.MoveTowards (Vertices [i + 1], Vertices [0], 4f);
+			//Vertices [i+1] = new Vector3 (block.corners[i].point.x * scale, 0f, block.corners[i].point.y * scale);
+            Vertices[i + 1] = new Vector3((block.corners[i].point.x * scale) - blockCenter.x, 0f, (block.corners[i].point.y * scale) - blockCenter.z);
+            Vertices[i + 1] = Vector3.MoveTowards (Vertices [i + 1], Vertices [0], 5f);
 		}
 
 		//{new Vector3(-1,0,1),new Vector3(1,0,1),new Vector3(1,0,-1),new Vector3(-1,0,-1)};
@@ -123,8 +131,8 @@ public class Main : MonoBehaviour
 		Vector2[] UV = new Vector2[block.corners.Count + 1];
 		UV [0] = new Vector2 (0, 0);
 		for (var i = 0; i < block.corners.Count; i++) {
-			UV [i+1] = new Vector2 (0, 0);
-		}
+			UV [i+1] = new Vector2 (0.5f, 0.5f);
+        }
 		//{new Vector2(0,256),new Vector2(256,256),new Vector2(256,0),new Vector2(0,0)};
 
 		int[] Triangles = new int[3 * block.corners.Count];// {0,1,2,0,2,3};
@@ -143,14 +151,137 @@ public class Main : MonoBehaviour
 		sideWalk.AddComponent<MeshFilter>().mesh = stuff;
 		sideWalk.AddComponent<MeshRenderer> ().material = lightGrayMaterial;
 		sideWalk.AddComponent<MeshCollider> ().sharedMesh = stuff;
-		stuff.vertices = Vertices;
+        sideWalk.GetComponent<MeshRenderer>().receiveShadows = true;
+        sideWalk.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        stuff.vertices = Vertices;
 		stuff.triangles = Triangles;
 		stuff.uv = UV;
 
 		sideWalk.transform.parent = blockObj.transform;
 
-		sideWalk.transform.localPosition = new Vector3 (0f, 0.2f, 0f);
-		sideWalk.transform.localScale = new Vector3 (1f, 1f, 1f);
+        //sideWalk.transform.localPosition = new Vector3 (blockCenter.x, 0.2f, blockCenter.z);
+        sideWalk.transform.localPosition = new Vector3(0f, 0.1f, 0f);
+        sideWalk.transform.localScale = new Vector3(1f, 1f, 1f);
 
-	}
+        blockObj.transform.localPosition = new Vector3(blockCenter.x, 0.2f, blockCenter.z);
+
+        foreach (var edge in block.borders)
+        {
+            // build sidewalk mesh
+
+            Vertices = new Vector3[4];
+            Vertices[0] = new Vector3((edge.v0.point.x * scale) - blockCenter.x, 0f, (edge.v0.point.y * scale) - blockCenter.z);
+            Vertices[1] = new Vector3((edge.v1.point.x * scale) - blockCenter.x, 0f, (edge.v1.point.y * scale) - blockCenter.z);
+            Vertices[2] = new Vector3((edge.v0.point.x * scale) - blockCenter.x, 0f, (edge.v0.point.y * scale) - blockCenter.z);
+            Vertices[3] = new Vector3((edge.v1.point.x * scale) - blockCenter.x, 0f, (edge.v1.point.y * scale) - blockCenter.z);
+            
+            Vertices[2] = Vector3.MoveTowards(Vertices[2], new Vector3(0f, 0f, 0f), 6f);
+            Vertices[3] = Vector3.MoveTowards(Vertices[3], new Vector3(0f, 0f, 0f), 6f);
+
+            //{new Vector3(-1,0,1),new Vector3(1,0,1),new Vector3(1,0,-1),new Vector3(-1,0,-1)};
+
+            UV = new Vector2[]{new Vector2(0,256),new Vector2(256,256),new Vector2(256,0),new Vector2(0,0)};
+            //UV = new Vector2[] { new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0) };
+
+
+            
+            if(Vertices[0].z < Vertices[2].z)
+            {
+                Triangles = new int[] { 1, 2, 3, 0, 2, 1 };
+            }
+            else if (Vertices[1].z < Vertices[3].z)
+            {
+                Triangles = new int[] { 0, 2, 1, 1, 2, 3 };
+            }
+            else
+                Triangles = new int[] { 0, 1, 2, 1, 3, 2 };
+            
+
+
+
+            stuff = new Mesh();
+            var road = new GameObject("Road");
+            road.AddComponent<MeshFilter>().mesh = stuff;
+            road.AddComponent<MeshRenderer>().material = darkGrayMaterial;
+            road.AddComponent<MeshCollider>().sharedMesh = stuff;
+            road.GetComponent<MeshRenderer>().receiveShadows = true;
+            road.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+
+            stuff.vertices = Vertices;
+            stuff.triangles = Triangles;
+            stuff.uv = UV;
+
+            road.transform.parent = blockObj.transform;
+
+            road.transform.localPosition = new Vector3(0f, 0f, 0f);
+            road.transform.localScale = new Vector3(1f, 1f, 1f);
+
+            var sizeMod = 1f;
+
+            if (block.biome == Biome.Scorched)
+                sizeMod = 6f;
+            else if (block.biome == Biome.Grassland)
+                sizeMod = 2f;
+            else if (block.biome == Biome.SubtropicalDesert)
+                sizeMod = 1.5f;
+
+
+            float xDiff = Vertices[0].x - Vertices[1].x;
+            float yDiff = Vertices[0].z - Vertices[1].z;
+            var angle = (float)Mathf.Atan2(yDiff, xDiff) * (float)(-180 / Mathf.PI);// + 90;
+            //new Vector3 (((x1 + x2) / 2f) * 1f, 0f, ((y1 + y2) / 2f) * 1f);
+
+            var building = Instantiate(buildingObj);
+            building.transform.parent = blockObj.transform;
+            var width1 = Random.Range(minBuildingSize.x, maxBuildingSize.x);
+            var height = Random.Range(minBuildingSize.y * sizeMod, maxBuildingSize.y * sizeMod);
+            var depth = Random.Range(minBuildingSize.z, maxBuildingSize.z);
+            building.transform.localScale = new Vector3(width1, height, depth);
+
+            // center on edge
+            var buildingPos = ((Vertices[0] - Vertices[1]) * 0.5f) + Vertices[1];
+            buildingPos = Vector3.MoveTowards(buildingPos, Vector3.zero, 14f + (depth / 2));
+            building.transform.localPosition = new Vector3(buildingPos.x, (height/2), buildingPos.z);
+            building.transform.eulerAngles = new Vector3(0, angle, 0);
+
+            building = Instantiate(buildingObj);
+            building.transform.parent = blockObj.transform;
+            var width = Random.Range(minBuildingSize.x, maxBuildingSize.x);
+            height = Random.Range(minBuildingSize.y * sizeMod, maxBuildingSize.y * sizeMod);
+            depth = Random.Range(minBuildingSize.z, maxBuildingSize.z);
+            building.transform.localScale = new Vector3(width, height, depth);
+
+            // center on edge
+            buildingPos = ((Vertices[0] - Vertices[1]) * 0.5f) + Vertices[1];
+            buildingPos = Vector3.MoveTowards(buildingPos, Vertices[1], (width1) + (width / 2));
+            buildingPos = Vector3.MoveTowards(buildingPos, Vector3.zero, 14f + (depth / 2));
+            building.transform.localPosition = new Vector3(buildingPos.x, (height / 2), buildingPos.z);
+            building.transform.eulerAngles = new Vector3(0, angle, 0);
+
+            building = Instantiate(buildingObj);
+            building.transform.parent = blockObj.transform;
+            width = Random.Range(minBuildingSize.x, maxBuildingSize.x);
+            height = Random.Range(minBuildingSize.y * sizeMod, maxBuildingSize.y * sizeMod);
+            depth = Random.Range(minBuildingSize.z, maxBuildingSize.z);
+            building.transform.localScale = new Vector3(width, height, depth);
+
+            // center on edge
+            buildingPos = ((Vertices[0] - Vertices[1]) * 0.5f) + Vertices[1];
+            buildingPos = Vector3.MoveTowards(buildingPos, Vertices[0], (width1) + (width/2));
+            buildingPos = Vector3.MoveTowards(buildingPos, Vector3.zero, 14f + (depth / 2));
+            building.transform.localPosition = new Vector3(buildingPos.x, (height / 2), buildingPos.z);
+            building.transform.eulerAngles = new Vector3(0, angle, 0);
+
+
+
+            /*
+            building.transform.localPosition = new Vector3(
+                -10f + (width / 2),
+                (height / 2),
+                -10f + (depth / 2));
+            */
+
+        }       
+
+    }
 }
