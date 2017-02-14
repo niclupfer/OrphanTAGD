@@ -27,7 +27,7 @@ public class Dust : MonoBehaviour {
         transform.forward = -Camera.main.transform.forward;
 
         // fades out
-        var newColor = new Color(1f, 1f, 1f, 1f - (Time.time - birthTime) / lifeTime);
+        var newColor = new Color(1f, 1f, 1f, 0.6f - (Time.time - birthTime) / lifeTime);
         GetComponent<SpriteRenderer>().color = newColor;
 
         // dies

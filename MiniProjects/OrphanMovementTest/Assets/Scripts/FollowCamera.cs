@@ -30,7 +30,7 @@ public class FollowCamera : MonoBehaviour
     {
         offset = transform.position - target.position;
 
-        dist = offset.magnitude;
+        //dist = offset.magnitude;
         angleOffset = Quaternion.LookRotation(transform.position, target.position).eulerAngles;
 
         angleOffset = new Vector3(angleOffset.x, angleOffset.y, angleOffset.z);
@@ -40,11 +40,11 @@ public class FollowCamera : MonoBehaviour
     {
         if(Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
-            dist += 0.2f;
+            //dist += 0.2f;
         }
         else if(Input.GetAxis("Mouse ScrollWheel") < 0f)
         {
-            dist -= 0.2f;
+            //dist -= 0.2f;
         }
 
 
@@ -77,7 +77,7 @@ public class FollowCamera : MonoBehaviour
         var zRotation = Quaternion.AngleAxis(_mouseAbsolute.x, transform.InverseTransformDirection(Vector3.up));
         transform.localRotation *= zRotation;
 
-        var tarPos = new Vector3(0f, 2f, 0f) + target.position;
+        var tarPos = new Vector3(0f, 3f, 0f) + target.position;
 
         Vector3 position = new Vector3(offset.x, offset.y, -dist * 2) + tarPos;// target.position ;
         //Vector3 position = new Vector3(offset.x, offset.y, -dist) + target.position;

@@ -60,17 +60,21 @@ public class PlayerController : MonoBehaviour {
         //var flatForward = new Vector3(transform.forward.x, 0f, transform.forward.z);
         //var flatRight = new Vector3(transform.right.x, 0f, transform.right.z);
 
-
+        
         var flatForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z);
         var flatRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z);
 
-        if (moveForward != 0 || moveSideways != 0)
-            transform.rotation = Quaternion.LookRotation(flatForward);
+        
 
         var moveF = flatForward * moveForward * speed * speedMod * Time.deltaTime;
 		var moveS = flatRight * moveSideways * speed * Time.deltaTime;
 
-		anim.SetFloat ("Speed", moveF.magnitude);
+        if (moveForward != 0 || moveSideways != 0)
+        {
+            transform.rotation = Quaternion.LookRotation(moveF + moveS);
+        }
+
+        anim.SetFloat ("Speed", moveF.magnitude + moveS.magnitude);
 
 		rb.velocity = moveF + moveS;
 	}

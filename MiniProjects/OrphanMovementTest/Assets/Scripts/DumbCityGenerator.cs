@@ -229,7 +229,10 @@ public class DumbCityGenerator : MonoBehaviour
 
     GameObject GenerateWallBuilding(float posX, float posZ, float wallLength, float wallDepth)
     {
+        var peri = GameObject.Find("Perimeter");
+
         var wall = Instantiate(buildingObj);
+        wall.transform.parent = peri.transform;
         wall.transform.localScale = new Vector3(wallLength, Random.Range(minBuildingSize.y, maxBuildingSize.y), wallDepth);
         wall.transform.position = new Vector3(posX, wall.transform.localScale.y / 2, posZ);
 
