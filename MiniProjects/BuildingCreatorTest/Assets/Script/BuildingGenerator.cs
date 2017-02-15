@@ -28,6 +28,9 @@ public class BuildingGenerator : MonoBehaviour {
     [SerializeField]
     GameObject road;
 
+    [SerializeField]
+    GameObject building;
+
     List<List<GameObject>> roadNetwork;
     int sizeX = 50;
     int sizeY = 50;
@@ -55,7 +58,68 @@ public class BuildingGenerator : MonoBehaviour {
         start.transform.position = new Vector3(pair.f,0, pair.s);
         Pair dir = new Pair(1, 0);
         build(pair, pickRand());
+        placeBuildings();
 	}
+
+    void placeBuildings()
+    {
+        for (int k = 0; k < sizeX; k++)
+        {
+            List<GameObject> row = roadNetwork[k];
+            for(int i = 0; i < sizeY; i++)
+            {
+
+                //List<GameObject> surr = new List<GameObject>();
+                Pair l = new Pair(k+1,i);
+                Pair r = new Pair(k-1,i);
+                Pair u = new Pair(k,i+1);
+                Pair d = new Pair(k,i-1);
+                GameObject center = roadNetwork[k][i];
+                
+                if (center != null && center.tag == "Road")
+                {
+                    //Debug.Log(center);
+                    if (l.inside(sizes))
+                    {
+                        GameObject left = roadNetwork[k + 1][i];
+
+                        if (left == null)
+                        {
+                            roadNetwork[k + 1][i] = Instantiate(building);
+                            roadNetwork[k + 1][i].transform.position = new Vector3(k + 1, 0, i);
+                        }
+                    }
+                    if (r.inside(sizes))
+                    {
+                        GameObject right = roadNetwork[k - 1][i];
+                        if (right == null)
+                        {
+                            roadNetwork[k - 1][i] = Instantiate(building);
+                            roadNetwork[k - 1][i].transform.position = new Vector3(k + 1, 0, i);
+                        }
+                    }
+                    if (u.inside(sizes))
+                    {
+                        GameObject up = roadNetwork[k][i + 1];
+                        if (up == null)
+                        {
+                            roadNetwork[k][i + 1] = Instantiate(building);
+                            roadNetwork[k][i + 1].transform.position = new Vector3(k, 0, i + 1);
+                        }
+                    }
+                    if (d.inside(sizes))
+                    {
+                        GameObject down = roadNetwork[k][i - 1];
+                        if (down == null)
+                        {
+                            roadNetwork[k][i - 1] = Instantiate(building);
+                            roadNetwork[k][i - 1].transform.position = new Vector3(k, 0, i - 1);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     Pair pickRand()
     {
@@ -65,7 +129,12 @@ public class BuildingGenerator : MonoBehaviour {
         {
             rand.f = 1;
         }
-
+        /*
+        if (Mathf.Abs(rand.f) == Mathf.Abs(rand.s))
+        {
+            rand = pickRand();
+        }
+        */
         return rand;
     }
 
@@ -86,18 +155,19 @@ public class BuildingGenerator : MonoBehaviour {
                 for (int j = -1; j < 2; j++)
                 {
                     newloc = loc + new Pair(k,j);
-                    if (newloc.inside(sizes) && roadNetwork[newloc.f][newloc.s] == null)
-                    {
+                    if (Mathf.Abs(newloc.f) == Mathf.Abs(newloc.s))
+                        if (newloc.inside(sizes) && roadNetwork[newloc.f][newloc.s] == null)
+                        {
 
-                        Pair newDir = new Pair(k, j);
-                        GameObject temp = Instantiate(road);
-                        temp.GetComponent<Renderer>().material.color = new Color(0,0,1, 1);
-                        temp.transform.position = new Vector3(newloc.f, 0, newloc.s);
-                        roadNetwork[newloc.f][newloc.s] = temp;
+                            Pair newDir = new Pair(k, j);
+                            GameObject temp = Instantiate(road);
+                            temp.GetComponent<Renderer>().material.color = new Color(0,0,1, 1);
+                            temp.transform.position = new Vector3(newloc.f, 0, newloc.s);
+                            roadNetwork[newloc.f][newloc.s] = temp;
 
-                        build(newloc, newDir);
-                        return;
-                    }
+                            build(newloc, newDir);
+                            return;
+                        }
                 }
             }
         }
@@ -109,7 +179,7 @@ public class BuildingGenerator : MonoBehaviour {
             temp.GetComponent<Renderer>().material.color = new Color(count / max, 0,0, 1);
             roadNetwork[newloc.f][newloc.s] = temp;
             build(newloc, dir);
-            if(Random.Range(0, 8) == 5)
+            if(Random.Range(0, 10) == 5)
                 build(newloc, pickRand());
         }
     }
