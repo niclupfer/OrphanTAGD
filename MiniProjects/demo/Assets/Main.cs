@@ -123,7 +123,7 @@ public class Main : MonoBehaviour
 		for (var i = 0; i < block.corners.Count; i++) {
 			//Vertices [i+1] = new Vector3 (block.corners[i].point.x * scale, 0f, block.corners[i].point.y * scale);
             Vertices[i + 1] = new Vector3((block.corners[i].point.x * scale) - blockCenter.x, 0f, (block.corners[i].point.y * scale) - blockCenter.z);
-            Vertices[i + 1] = Vector3.MoveTowards (Vertices [i + 1], Vertices [0], 5f);
+            Vertices[i + 1] = Vector3.MoveTowards (Vertices [i + 1], Vertices [0], 8f);
 		}
 
 		//{new Vector3(-1,0,1),new Vector3(1,0,1),new Vector3(1,0,-1),new Vector3(-1,0,-1)};
@@ -175,8 +175,8 @@ public class Main : MonoBehaviour
             Vertices[2] = new Vector3((edge.v0.point.x * scale) - blockCenter.x, 0f, (edge.v0.point.y * scale) - blockCenter.z);
             Vertices[3] = new Vector3((edge.v1.point.x * scale) - blockCenter.x, 0f, (edge.v1.point.y * scale) - blockCenter.z);
             
-            Vertices[2] = Vector3.MoveTowards(Vertices[2], new Vector3(0f, 0f, 0f), 6f);
-            Vertices[3] = Vector3.MoveTowards(Vertices[3], new Vector3(0f, 0f, 0f), 6f);
+            Vertices[2] = Vector3.MoveTowards(Vertices[2], new Vector3(0f, 0f, 0f), 9f);
+            Vertices[3] = Vector3.MoveTowards(Vertices[3], new Vector3(0f, 0f, 0f), 9f);
 
             //{new Vector3(-1,0,1),new Vector3(1,0,1),new Vector3(1,0,-1),new Vector3(-1,0,-1)};
 
@@ -184,7 +184,7 @@ public class Main : MonoBehaviour
             //UV = new Vector2[] { new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0) };
 
 
-            
+            /*
             if(Vertices[0].z < Vertices[2].z)
             {
                 Triangles = new int[] { 1, 2, 3, 0, 2, 1 };
@@ -193,8 +193,11 @@ public class Main : MonoBehaviour
             {
                 Triangles = new int[] { 0, 2, 1, 1, 2, 3 };
             }
-            else
-                Triangles = new int[] { 0, 1, 2, 1, 3, 2 };
+            else */
+			Triangles = new int[] { 0, 1, 2,
+									1, 3, 2,			
+									2, 1, 0,
+									2, 3, 1 };
             
 
 
@@ -215,6 +218,7 @@ public class Main : MonoBehaviour
 
             road.transform.localPosition = new Vector3(0f, 0f, 0f);
             road.transform.localScale = new Vector3(1f, 1f, 1f);
+
 
             var sizeMod = 1f;
 
