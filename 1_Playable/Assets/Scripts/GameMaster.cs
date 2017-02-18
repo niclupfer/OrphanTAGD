@@ -5,8 +5,6 @@ using System.Runtime.InteropServices;
 
 public enum GAME_STATE { title, howTo, playing, over };
 
-public delegate void StateCallBack(GAME_STATE newState);  
-
 public class GameMaster : MonoBehaviour {
 	
 	public GAME_STATE state;
@@ -17,10 +15,9 @@ public class GameMaster : MonoBehaviour {
 	{
 		fader = GameObject.Find ("Fader").GetComponent<DarthFader> ();
 
-		state = GAME_STATE.title;
+        StartState(state);
 
 		// fade in title
-		fader.FadeOut();
 
 		// wait for click or key press
 
@@ -69,39 +66,62 @@ public class GameMaster : MonoBehaviour {
 
 		if (!fader.visible && Input.anyKeyDown)
 		{
-			if (state == Game_STATE.title)
+			if (state == GAME_STATE.title)
 			{
-				StateCallBack cb = new StateCallBack (GameMaster.StateState (GAME_STATE.howTo));
-				fader.FadeIn (cb);
+				fader.FadeIn (GAME_STATE.howTo);
 			}
-		}
+            else if (state == GAME_STATE.howTo)
+            {
+                fader.FadeIn(GAME_STATE.playing);
+            }
+            else if (state == GAME_STATE.over)
+            {
+                fader.FadeIn(GAME_STATE.title);
+            }
+        }
 	}
+
+    void LoadCity()
+    {
+        GameObject.Find("TheCity").GetComponent<DumbCityGenerator>().GenerateSquareCity();
+    }
+
+    void AddPlayer()
+    {
+
+    }
 
 	public void StartState(GAME_STATE newState)
 	{
 		GameObject.Find("Title").GetComponent<RawImage>().color = new Color(0f, 0f, 0f, 0f);
 		GameObject.Find("HowTo").GetComponent<RawImage>().color = new Color(0f, 0f, 0f, 0f);
-		GameObject.Find("Title").GetComponent<RawImage>().color = new Color(0f, 0f, 0f, 0f);
+		GameObject.Find("Gameover").GetComponent<RawImage>().color = new Color(0f, 0f, 0f, 0f);
 
 		switch (newState)
 		{
 			case GAME_STATE.title:
-				GameObject.Find("Title").GetComponent<RawImage>().color = new Color(0f, 0f, 0f, 1f);
-				break;
+				GameObject.Find("Title").GetComponent<RawImage>().color = new Color(1f, 1f, 1f, 1f);
+                fader.FadeOut();
+                break;
 
 			case GAME_STATE.howTo:
-				GameObject.Find("HowTo").GetComponent<RawImage>().color = new Color(0f, 0f, 0f, 1f);
-				break;
+				GameObject.Find("HowTo").GetComponent<RawImage>().color = new Color(1f, 1f, 1f, 1f);
+                fader.FadeOut();
+                break;
 
 			case GAME_STATE.playing:
-				
-				break;
+                LoadCity();
+                AddPlayer();
+                fader.FadeOut();
+                break;
 
 			case GAME_STATE.over:
-				GameObject.Find("Gameover").GetComponent<RawImage>().color = new Color(0f, 0f, 0f, 1f);
-				break;
+				GameObject.Find("Gameover").GetComponent<RawImage>().color = new Color(1f, 1f, 1f, 1f);
+                break;
 		}
 
 		state = newState;
-	}
+
+        
+    }
 }

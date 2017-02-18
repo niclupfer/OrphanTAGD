@@ -21,12 +21,12 @@ public class DarthFader : MonoBehaviour {
 		StartCoroutine (Do_FadeOut());
 	}
 
-	public void FadeIn (StateCallBack callback)
+	public void FadeIn (GAME_STATE newState)
 	{
-		StartCoroutine (Do_FadeIn(callback));
+		StartCoroutine (Do_FadeIn(newState));
 	}
 
-	IEnumerator Do_FadeIn(StateCallBack callback)
+	IEnumerator Do_FadeIn(GAME_STATE newState)
 	{
 		visible = true;
 
@@ -42,7 +42,7 @@ public class DarthFader : MonoBehaviour {
 		GetComponent<RawImage> ().color = new Color(0f, 0f, 0f, 1f);
 
 		// fade in finished
-		callback();
+		GameObject.Find("GameMaster").GetComponent<GameMaster>().StartState(newState);
 
 		yield return null;
 	}
