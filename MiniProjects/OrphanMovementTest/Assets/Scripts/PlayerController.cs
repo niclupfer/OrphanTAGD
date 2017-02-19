@@ -16,8 +16,11 @@ public class PlayerController : MonoBehaviour {
 	public bool hiding = false;
 
     public GameObject dustObj;
+    public AudioClip footstep;
     public float dustInterval;
     float lastDustTime;
+
+    public AudioManager am;
 
 	void Start ()
 	{
@@ -84,5 +87,8 @@ public class PlayerController : MonoBehaviour {
         var dust = Instantiate(dustObj);
         dust.transform.position = transform.position;
         lastDustTime = Time.time;
+        am.PlaySFX(footstep, 1, true);
     }
+
+	
 }
