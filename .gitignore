@@ -37,3 +37,7 @@ ExportedObj/
 *.unitypackage
 
 *.project
+
+*ProjectVersion.txt
+*/ProjectVersion.txt
+*/*/ProjectVersion.txt
