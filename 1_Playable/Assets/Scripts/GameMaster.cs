@@ -76,6 +76,7 @@ public class GameMaster : MonoBehaviour {
             }
             else if (state == GAME_STATE.over)
             {
+                //Debug.Log("Going to title");
                 fader.FadeIn(GAME_STATE.title);
             }
         }
@@ -83,12 +84,13 @@ public class GameMaster : MonoBehaviour {
 
     void LoadCity()
     {
+        
         GameObject.Find("TheCity").GetComponent<DumbCityGenerator>().GenerateSquareCity();
     }
 
     void AddPlayer()
     {
-
+        GameObject.Find("Player").GetComponent<PlayerController>().Init();
     }
 
 	public void StartState(GAME_STATE newState)
@@ -100,7 +102,9 @@ public class GameMaster : MonoBehaviour {
 		switch (newState)
 		{
 			case GAME_STATE.title:
-				GameObject.Find("Title").GetComponent<RawImage>().color = new Color(1f, 1f, 1f, 1f);
+                //Debug.Log("starting state: title");
+                GameObject.Find("TheCity").GetComponent<DumbCityGenerator>().ClearCity();
+                GameObject.Find("Title").GetComponent<RawImage>().color = new Color(1f, 1f, 1f, 1f);
                 fader.FadeOut();
                 break;
 

@@ -15,6 +15,9 @@ public class DumbCityGenerator : MonoBehaviour
     public GameObject buildingObj;
     public GameObject carObj;
 
+    public GameObject breadStandObj;
+
+
     public float blockSize;
 
     public int blocksWide;
@@ -23,6 +26,7 @@ public class DumbCityGenerator : MonoBehaviour
     public float streetPadding;
     public float intersectionPadding;
     public float buildingPadding;
+    public float shopPadding;
 
     public Vector3 minBuildingSize;
     public Vector3 maxBuildingSize;
@@ -54,6 +58,16 @@ public class DumbCityGenerator : MonoBehaviour
         // outsideSW.name = "outsideSW";
 
         GeneratePerimeter();
+    }
+
+    public void ClearCity()
+    {
+        Transform[] ts = GetComponentsInChildren<Transform>();
+        foreach (Transform t in ts)
+        {
+            if (t != null && t.gameObject != null && t.gameObject != gameObject)
+                Destroy(t.gameObject);
+        }
     }
 
     void GenerateBlockGrid(int blocksWide)
@@ -162,6 +176,36 @@ public class DumbCityGenerator : MonoBehaviour
         westStreet.end = new Vector3(x - streetPadding, 0f, z - streetPadding + intersectionPadding);
         streets.Add(westStreet);
 
+        // put a bread shop somewhere around the outside of the block
+        var side = TAGDGame.ChooseRandomFromArray(new int[] { 0, 1 });
+
+        if(side == 0)
+        {
+            var northSouth = TAGDGame.ChooseRandomFromArray(new int[] { 1, -1 });
+            var eastWest = TAGDGame.ChooseRandomFromArray(new int[] { 1, -1 });
+
+            var shop = Instantiate(breadStandObj);
+            shop.transform.parent = block.transform;
+            shop.transform.eulerAngles = new Vector3(0, 90f, 0);
+            shop.transform.localPosition = new Vector3(
+                (shopPadding - 8f)* eastWest,
+                0f,
+                shopPadding * northSouth);
+        }
+        else
+        {
+            var northSouth = TAGDGame.ChooseRandomFromArray(new int[] { 1, -1 });
+            var eastWest = TAGDGame.ChooseRandomFromArray(new int[] { 1, -1 });
+
+            var shop = Instantiate(breadStandObj);
+            shop.transform.parent = block.transform;
+            shop.transform.localPosition = new Vector3(
+                (shopPadding - 0f) * eastWest,
+                0f,
+                (shopPadding - 8f) * northSouth);
+        }
+
+
     }
 
     void GenerateCars(int numCars)
@@ -181,7 +225,6 @@ public class DumbCityGenerator : MonoBehaviour
             streets[i].start.z);
             cars.Add(car);
         }
-
     }
 
     public Street GetStreetWithStart(Vector3 startPos)
@@ -199,7 +242,9 @@ public class DumbCityGenerator : MonoBehaviour
         var peri = new GameObject("Perimeter");
         peri.transform.parent = transform;
         var wallLengthRem = wallLengthStart;
-        
+
+        //Debug.Log("Wall Length Start : " + wallLengthStart);
+
         //create corners
         var cornerLength = wallLengthStart / 2 + wallPadSquare / 4;
         var corner = GenerateWallBuilding(cornerLength, -cornerLength, wallPadSquare / 2, wallPadSquare / 2);
@@ -239,15 +284,21 @@ public class DumbCityGenerator : MonoBehaviour
         wall.transform.localScale = new Vector3(wallLength, Random.Range(minBuildingSize.y, maxBuildingSize.y), wallDepth);
         wall.transform.position = new Vector3(posX, wall.transform.localScale.y / 2, posZ);
 
+        //Debug.Log("adding wall block");
+
         return wall;
     }
 
     GameObject GenerateFillerBuildingZ(float fillerPosX, float fillerPosZ, float fillerLength, float wallLengthStart)
     {
         var wallLengthRem = wallLengthStart;
+        //Debug.Log("Wall Length Rem : " + wallLengthRem);
+
         GameObject fillerBuilding = null;
         while (wallLengthRem > 0)
         {
+            //Debug.Log("Wall Length em : " + wallLengthRem);
+
             fillerBuilding = GenerateWallBuilding(fillerPosX + fillerLength / 2, fillerPosZ, fillerLength, 50);
             wallLengthRem -= fillerBuilding.transform.localScale.x;
             fillerPosX += fillerBuilding.transform.localScale.x;
