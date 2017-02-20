@@ -27,6 +27,7 @@ public class LoafPickup : MonoBehaviour {
         {
             // lock the loaf transform to the players right hand
             transform.position = hand.position;
+            //Debug.Log(hand.position);
             transform.rotation = hand.rotation;
 		}
 	}

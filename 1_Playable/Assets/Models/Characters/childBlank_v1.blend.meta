@@ -49,6 +49,7 @@ ModelImporter:
     7400020: Slide
     7400022: Jumping
     7400024: JumpingRun
+    7400026: Eating
     9500000: //RootNode
     11100000: //RootNode
     13700000: Cube
@@ -714,6 +715,64 @@ ModelImporter:
     - serializedVersion: 16
       name: JumpingRun
       takeName: JumpingRun
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Eating
+      takeName: Eating
       firstFrame: -1
       lastFrame: 0
       wrapMode: 0

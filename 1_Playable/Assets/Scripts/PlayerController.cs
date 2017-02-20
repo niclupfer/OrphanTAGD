@@ -31,6 +31,10 @@ public class PlayerController : MonoBehaviour {
     float lastDustTime;
 
     public GameObject eatSoundObj;
+    public AudioClip footstep;
+    public AudioManager am;
+
+    public Transform rightHand;
 
 	void Start ()
 	{
@@ -82,13 +86,15 @@ public class PlayerController : MonoBehaviour {
         }
         anim.SetBool("Hiding", hiding);
 
+        /*
         if (Input.GetButtonDown("Jump"))
         {
             anim.SetTrigger("Dab");
+            StartCoroutine(Dab());
         }
+        */
 
-
-        if ((moveForward != 0 || moveSideways != 0) && lastDustTime + dustInterval < Time.time)
+        if ((moveForward != 0 || moveSideways != 0) && lastDustTime + (dustInterval/speedMod) < Time.time)
             MakeDust();
 
         if(loafInHands == true)
@@ -120,10 +126,13 @@ public class PlayerController : MonoBehaviour {
         foodInHands = tableObj.GetComponent<ShopTable>().StealFood();
 
         // move the loaf
-        foodInHands.transform.parent = transform;
+        foodInHands.transform.parent = null;
         foodInHands.GetComponent<LoafPickup>().inPlayerHands = true;
         foodInHands.GetComponent<LoafRotation>().onDisplay = false;
-        foodInHands.GetComponent<LoafPickup>().hand = GameObject.Find("Forearm_R").transform;
+        //foodInHands.GetComponent<LoafPickup>().hand = GameObject.Find("R_WRIST_END RIGHT HANDX");
+        foodInHands.GetComponent<LoafPickup>().hand = rightHand;
+        //Debug.Log("Grab loaf");
+        //Debug.Log(rightHand.position);
     }
 
     IEnumerator EatLoaf()
@@ -131,6 +140,7 @@ public class PlayerController : MonoBehaviour {
         Instantiate(eatSoundObj);       
 
         playable = false;
+        anim.SetBool("Eating", true);
 
         yield return new WaitForSeconds(3);
 
@@ -140,11 +150,21 @@ public class PlayerController : MonoBehaviour {
 
         playable = true;
         loafInHands = false;
+        anim.SetBool("Eating", false);
         Destroy(foodInHands);
         foodInHands = null;
     }
 
-	void FixedUpdate()
+    IEnumerator Dab()
+    {
+        playable = false;
+
+        yield return new WaitForSeconds(3);
+
+        playable = true;
+    }
+
+    void FixedUpdate()
 	{
  
             rb.angularVelocity = Vector3.zero;
@@ -158,17 +178,18 @@ public class PlayerController : MonoBehaviour {
 
         
 
-        var moveF = flatForward * moveForward * Time.deltaTime;
-		var moveS = flatRight * moveSideways * Time.deltaTime;
+        var moveF = flatForward * moveForward ;
+		var moveS = flatRight * moveSideways;
 
         if (moveForward != 0 || moveSideways != 0)
         {
             transform.rotation = Quaternion.LookRotation(moveF + moveS);
         }
+        //Debug.Log("both : " + (moveF + moveS));
+        //Debug.Log("normalized : " + (moveF + moveS).normalized);
+        anim.SetFloat ("Speed", (moveF + moveS).normalized.magnitude * speed * speedMod * Time.deltaTime);
 
-        anim.SetFloat ("Speed", (moveF.magnitude + moveS.magnitude) * speed * speedMod);
-
-		rb.velocity = (moveF + moveS) * speed * speedMod;
+		rb.velocity = (moveF + moveS).normalized * speed * speedMod * Time.deltaTime;
 	}
 
     void MakeDust()
@@ -176,6 +197,8 @@ public class PlayerController : MonoBehaviour {
         var dust = Instantiate(dustObj);
         dust.transform.position = transform.position;
         lastDustTime = Time.time;
+
+        am.PlaySFX(footstep, 1, true);
     }
 
     public void DieOfStarvation()
@@ -231,6 +254,18 @@ public class PlayerController : MonoBehaviour {
         if (other.tag == "ShopTable")
         {
             nearTable = false;
+        }
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.collider.tag == "ShopKeeper")
+        {
+            if (other.collider.GetComponent<BakerAI>().chasing)
+            {
+                // you got caught
+                DieOfStarvation();
+            }
         }
     }
 }

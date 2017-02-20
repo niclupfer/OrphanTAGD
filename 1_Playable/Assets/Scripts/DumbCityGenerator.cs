@@ -14,6 +14,8 @@ public class DumbCityGenerator : MonoBehaviour
     public GameObject sidewalkObj;
     public GameObject buildingObj;
     public GameObject carObj;
+    public GameObject trashcanObj;
+    public GameObject crateObj;
 
     public GameObject breadStandObj;
 
@@ -118,6 +120,7 @@ public class DumbCityGenerator : MonoBehaviour
             (height / 2),
             -buildingPadding + (depth / 2));
 
+        
         var building2 = Instantiate(buildingObj);
         building2.transform.parent = block.transform;
         width = Random.Range(minBuildingSize.x, maxBuildingSize.x);
@@ -128,6 +131,8 @@ public class DumbCityGenerator : MonoBehaviour
             -buildingPadding + (width / 2),
             (height / 2),
             buildingPadding - (depth / 2));
+
+
 
         var building3 = Instantiate(buildingObj);
         building3.transform.parent = block.transform;
@@ -150,6 +155,25 @@ public class DumbCityGenerator : MonoBehaviour
             buildingPadding - (width / 2),
             (height / 2),
             buildingPadding - (depth / 2));
+
+        // place alley debris
+        PlaceAlleyStuff(block,
+            new Vector3(-buildingPadding, 0f, -buildingPadding + building1.transform.localScale.z),
+            new Vector3(-buildingPadding + building2.transform.localScale.x, 0f, buildingPadding - building2.transform.localScale.z));
+
+        PlaceAlleyStuff(block,
+            new Vector3(-buildingPadding + building1.transform.localScale.x, 0f, -buildingPadding),
+            new Vector3(buildingPadding - building3.transform.localScale.x, 0f, -buildingPadding + building3.transform.localScale.z));
+
+        PlaceAlleyStuff(block,
+            new Vector3(-buildingPadding + building2.transform.localScale.x, 0f, buildingPadding - building2.transform.localScale.z),
+            new Vector3(buildingPadding - building4.transform.localScale.x, 0f, buildingPadding));
+
+        PlaceAlleyStuff(block,
+            new Vector3(buildingPadding - building3.transform.localScale.x, 0f, -buildingPadding + building3.transform.localScale.z),
+            new Vector3(buildingPadding, 0f, buildingPadding - building4.transform.localScale.z));
+        
+
 
         // set street info
         var northStreet = new Street();
@@ -206,6 +230,30 @@ public class DumbCityGenerator : MonoBehaviour
         }
 
 
+    }
+
+    void PlaceAlleyStuff(GameObject block, Vector3 topLeft, Vector3 bottomRight)
+    {
+        var minSize = 5f;
+        // if alley is wide and tall enough
+        if (Mathf.Abs(topLeft.x - bottomRight.x) < minSize
+                || Mathf.Abs(topLeft.z - bottomRight.z) < minSize)
+        {
+            return;
+        }
+
+
+        var debrisPerAlley = 3;
+        for(var i = 0; i < debrisPerAlley; i++)
+        {
+            // crate or trashcan
+            var obj = Instantiate(TAGDGame.ChooseRandomFromArray(new GameObject[] { trashcanObj, crateObj }));
+            obj.transform.parent = block.transform;
+            obj.transform.localPosition = new Vector3(
+                Random.Range(topLeft.x + 1.2f, bottomRight.x - 1.2f),
+                obj.transform.position.y,
+                Random.Range(topLeft.z + 1.2f, bottomRight.z - 1.2f));
+        }
     }
 
     void GenerateCars(int numCars)
