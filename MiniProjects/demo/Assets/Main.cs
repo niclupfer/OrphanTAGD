@@ -167,7 +167,7 @@ public class Main : MonoBehaviour
 
         foreach (var edge in block.borders)
         {
-            // build sidewalk mesh
+            // build road mesh
 
             Vertices = new Vector3[4];
             Vertices[0] = new Vector3((edge.v0.point.x * scale) - blockCenter.x, 0f, (edge.v0.point.y * scale) - blockCenter.z);
@@ -219,7 +219,7 @@ public class Main : MonoBehaviour
             road.transform.localPosition = new Vector3(0f, 0f, 0f);
             road.transform.localScale = new Vector3(1f, 1f, 1f);
 
-
+            
             var sizeMod = 1f;
 
             if (block.biome == Biome.Scorched)

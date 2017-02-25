@@ -25,12 +25,14 @@ namespace Assets.Map
         public Graph Graph { get; private set; }
         public Center SelectedCenter { get; private set; }
 
+        public List<Center> blocks;
+
 		public Map(CitySize size)
         {
 			if (size == CitySize.small) {
-				Width = 10;
-				Height = 10;
-				_pointCount = 20;
+				Width = 30;
+				Height = 30;
+				_pointCount = 60;
 				// neighborhoods = ? 
 				// gangs = ?
 			}
@@ -76,6 +78,35 @@ namespace Assets.Map
 			Debug.Log ("New Edges: " + Graph.edges.Count);
 
 			Debug.Log("Blocks: "+CountBlocks());
+
+            // create blocks
+            blocks = CreateBlocks(Graph.centers);
+
+            
+        }
+
+        List<Center> CreateBlocks(List<Center> centers)
+        {
+            var bs = new List<Center>();
+
+            foreach (var c in centers)
+            {
+                var b = new Center();
+                b.biome = c.biome;
+
+                var ps = new List<Corner>();
+                foreach (var p in c.corners)
+                {
+                    var corn = new Corner();
+                    corn.point = Vector2.MoveTowards(p.point, c.point, 8f/50f);
+                    ps.Add(corn);
+                }
+                b.corners = ps;
+
+                bs.Add(b);
+            }
+
+            return bs;
         }
 
 		void RemoveShortEdges(float minRoadLength)

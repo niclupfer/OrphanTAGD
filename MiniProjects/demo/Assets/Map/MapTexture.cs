@@ -49,8 +49,14 @@ namespace Assets.Map
 				}).ToArray();
 
             foreach (var c in map.Graph.centers)
-                texture.FillPolygon(c.corners.Select(p => new Vector2(p.point.x * _textureScale, p.point.y * _textureScale)).ToArray(), BiomeProperties.Colors[c.biome]);
+                texture.FillPolygon(c.corners.Select(p => new Vector2(p.point.x * _textureScale, p.point.y * _textureScale)).ToArray(), Color.gray);// BiomeProperties.Colors[c.biome]);
 
+            foreach (var b in map.blocks)
+            {
+                Debug.Log("Corners: " + b.corners.Count);
+                Debug.Log("Point 0: " + b.corners[0].point);
+                texture.FillPolygon(b.corners.Select(p => new Vector2(p.point.x * _textureScale, p.point.y * _textureScale)).ToArray(), BiomeProperties.Colors[b.biome]);
+            }
 
 
             foreach (var road in roads)
