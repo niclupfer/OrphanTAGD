@@ -63,7 +63,7 @@ public class NodeController : MonoBehaviour {
     {
         if (generateMoreNPC)
         {
-            Debug.Log("Generating " + numToGen + "NPCs.");
+       //     Debug.Log("Generating " + numToGen + "NPCs.");
             nodeNPCs.transform.parent = transform;
             for (int i = 0; i < numToGen; ++i)
             {

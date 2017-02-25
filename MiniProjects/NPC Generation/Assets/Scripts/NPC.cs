@@ -14,12 +14,18 @@ public class NPC : MonoBehaviour
 
     public float minWalkSpeed = 4f;
     public float maxWalkSpeed = 8f;
+    public float turningSpeed = 4f;
     private float walkingSpeed;
+
+    public Transform eyes;
+
 
     public bool isPatrol = true;
     public bool reverseDir = false;
 
     public int lastNodeIndex;
+    private bool startLooking = true;
+    private bool obstacleDetected = false;
 
     // Use this for initialization
 
@@ -70,32 +76,52 @@ public class NPC : MonoBehaviour
 
         if (isPatrol)
         {
-         /*
-            if (!reverseDir)
+            if (startLooking)
             {
-                nextNodeIndex = currentNodeIndex + 1;
-                if (currentNodeIndex != lastNodeIndex)
-                    nextNode = nodeCtrl.nodes[nextNodeIndex].transform;
+                StartCoroutine(lookForObstacles());
+                Vector3 fwd = transform.TransformDirection(Vector3.forward);
+                RaycastHit hit;
+                if (Physics.SphereCast(transform.position, 4*transform.localScale.z, fwd, out hit, 20f))
+                {
+                    if (hit.transform.gameObject.layer == 8)
+                    {
+                        Debug.DrawLine(transform.position, hit.point, Color.red, 1f);
+                        obstacleDetected = true;                    
+                    }
+                }
                 else
-                    nextNode = nodeCtrl.nodes[0].transform;
+                    obstacleDetected = false;
             }
-            else
+            if (!obstacleDetected)
             {
-                nextNodeIndex = currentNodeIndex - 1;
-                if (currentNodeIndex == 0)
-                    nextNode = nodeCtrl.nodes[lastNodeIndex].transform;
-                else
-                    nextNode = nodeCtrl.nodes[nextNodeIndex].transform;
-            }*/
-            float step = walkingSpeed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, nextNode.position, step);
+                float step = walkingSpeed * Time.deltaTime;
+                float turnStep = turningSpeed * Time.deltaTime;
+                Vector3 targetDir = nextNode.position - transform.position;
+                targetDir.y = 0;
+                var rotation = Quaternion.LookRotation(targetDir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, turnStep);
+                transform.position = Vector3.MoveTowards(transform.position, nextNode.position, step);
+            }else
+            {
+                float step = walkingSpeed * Time.deltaTime;
+                float turnStep = turningSpeed * Time.deltaTime;
+                Vector3 targetDir = nextNode.position - transform.position;
+                targetDir.y = 0;
+                var rotation = Quaternion.LookRotation(targetDir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, turnStep);
+                transform.position = Vector3.MoveTowards(transform.position, nextNode.position, step);
+            }
         }
     }
 
-    public int decisionMaking()
+    public void obstacleAvoidance(Transform obs)
+    {
+        obstacleDetected = true;
+    }
+    public void decisionMaking()
     {
         int decision = Random.Range(0, 7);
- //       decision = -1;  //uncomment this line to enable decision making
+ //       decision = -1;  //uncomment this line to disable decision making
         switch (decision)
         {
             case 0:
@@ -119,7 +145,6 @@ public class NPC : MonoBehaviour
                 // shouldn't be here
                 break;
         }
-        return 0;
     }
 
     void crossStreet(int whichWay)
@@ -237,5 +262,12 @@ public class NPC : MonoBehaviour
                     return true;
         }
         return false;
+    }
+
+    IEnumerator lookForObstacles()
+    {
+        startLooking = false;
+        yield return new WaitForSeconds(0f);
+        startLooking = true;
     }
 }

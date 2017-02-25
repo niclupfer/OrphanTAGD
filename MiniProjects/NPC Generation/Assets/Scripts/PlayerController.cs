@@ -20,11 +20,6 @@ public class PlayerController : MonoBehaviour {
     public float dustInterval;
     float lastDustTime;
 
-
-    // for node stuff
-    public float sightDistance = 10f;
-    public bool lookForNodeCtrls = true;
-
     public AudioManager am;
 
 	void Start ()
@@ -57,10 +52,7 @@ public class PlayerController : MonoBehaviour {
 		anim.SetBool ("Hiding", hiding);
 
         if ((moveForward != 0 || moveSideways != 0) && lastDustTime + dustInterval < Time.time)
-            MakeDust();
-
-      //  if (lookForNodeCtrls)
-        //    StartCoroutine(LookForNodeCtrls());
+            MakeDust();           
     }
 
 	void FixedUpdate()
