@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Stamina : MonoBehaviour {
     GameObject emptyBar;
-    public float stamina = 100;
+    public float stamina;
     public float StaminaRate;
     public float exhaustion;
     // Use this for initialization
@@ -15,7 +15,7 @@ public class Stamina : MonoBehaviour {
 
     private void Start()
     {
-        emptyBar = GameObject.Find("Stamina Empty");
+        emptyBar = GameObject.Find("Stamina Bar");
         startPos = emptyBar.GetComponent<RectTransform>().localPosition;
     }
 
@@ -47,14 +47,14 @@ public class Stamina : MonoBehaviour {
         }*/
 
 
-        if (stamina < 100 && Time.time > lastTimeUsed + staminaRechargeTime) // and its been rechargeTime since last stamina use, then recharge
+        if (stamina < 0 && Time.time > lastTimeUsed + staminaRechargeTime) // and its been rechargeTime since last stamina use, then recharge
         {
             stamina += Time.deltaTime * StaminaRate;
             emptyBar.GetComponent<RectTransform>().localPosition = new Vector3(stamina, startPos.y, startPos.z);
         }
-        if (stamina > 100)
+        if (stamina > 0)
         {
-            stamina = 100;
+            stamina = 0;
             emptyBar.GetComponent<RectTransform>().localPosition = new Vector3(stamina, startPos.y, startPos.z);
         }
 

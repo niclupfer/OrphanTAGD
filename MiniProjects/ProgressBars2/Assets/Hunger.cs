@@ -3,25 +3,36 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class Hunger : MonoBehaviour {
-    GameObject HungryEmpty;
-    static public float hunger = 100;
+
+    GameObject emptyBar;
+
+    public float hunger = 100;
+
     public float hungerRate;
-   // public float timerRate; 
+
+    Vector3 startPos;
+
     private void Start()
     {
-        HungryEmpty = GameObject.Find("Hunger Empty");
+        emptyBar = GameObject.Find("Hunger Empty");
+        startPos = emptyBar.GetComponent<RectTransform>().localPosition;
     }
-    // Update is called once per frame
-    
-	// Update is called once per frame
-	void Update () { 
-            hunger -= Time.deltaTime*hungerRate;
-            HungryEmpty.transform.Translate(-hungerRate, 0, 0);
-     
-        if(hunger < 1)
+
+	void Update ()
+    {         
+        if(hunger < 0)
         {
             hunger = 0;
-            HungryEmpty.transform.Translate(0, 0, 0);
+            emptyBar.GetComponent<RectTransform>().localPosition = new Vector3(0, startPos.y, startPos.z);
+
+            // game over!!!!
+           // GetComponent<PlayerController>().DieOfStarvation();
         }
-	}
+        else
+        {
+            hunger -= Time.deltaTime * hungerRate;
+            emptyBar.GetComponent<RectTransform>().localPosition = new Vector3(hunger, startPos.y, startPos.z);
+            //HungryEmpty.transform.Translate(-hungerRate, 0, 0);
+        }
+    }
 }
