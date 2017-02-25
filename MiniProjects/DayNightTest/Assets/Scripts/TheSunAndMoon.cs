@@ -4,30 +4,29 @@ using System.Collections;
 public class TheSunAndMoon : MonoBehaviour {
     public Gradient nightDayColor;
 
-    public float maxIntensity = 3f;
+    public float maxIntensity = 1f;
     public float minIntensity = 0f;
     
 
     public Gradient nightDayFogColor;
     public AnimationCurve fogDensityCurve;
-    public float fogScale = 1f;
-
+    
+	public float maxAmbientIntensity = 1f;
+	public float minAmbientIntensity = 0f;
     public float dayAtmosphereThickness = 0.4f;
     public float nightAtmosphereThickness = 0.87f;
+
     public int daySpeed = 0;
     public int nightSpeed = 0;
     public string timeofDay;
-    
-
-    float skySpeed = 1;
 
     [HideInInspector]
-    public float minPoint = -0.2f;
+    float minPoint = -0.2f;
     Vector3 dayRotateSpeed;
     Vector3 nightRotateSpeed;
+	float fogScale = 1f;
+	float skySpeed = 1;
 
-
-    
     
 
     Light mainLight;
@@ -39,10 +38,13 @@ public class TheSunAndMoon : MonoBehaviour {
 
         mainLight = GetComponent<Light>();
         skyMat = RenderSettings.skybox;
-        dayRotateSpeed[0] = daySpeed;
-        nightRotateSpeed[0] = nightSpeed;
-    }
+ 	}
+	public void time(){
+		transform.rotation = Quaternion.Euler (350, 90, 0);
+		dayRotateSpeed[0] = daySpeed;
+		nightRotateSpeed[0] = nightSpeed;
 
+	}
     void Update()
     {
 
@@ -51,12 +53,16 @@ public class TheSunAndMoon : MonoBehaviour {
         float i = ((maxIntensity - minIntensity) * dot) + minIntensity;
 
         mainLight.intensity = i;
+		float j = ((maxAmbientIntensity - minAmbientIntensity) * dot) + minAmbientIntensity;
+		RenderSettings.ambientIntensity = j;
+		DynamicGI.UpdateEnvironment();
 
         mainLight.color = nightDayColor.Evaluate(dot);
         RenderSettings.ambientLight = mainLight.color;
 
         RenderSettings.fogColor = nightDayFogColor.Evaluate(dot);
         RenderSettings.fogDensity = fogDensityCurve.Evaluate(dot) * fogScale;
+
 
         i = ((dayAtmosphereThickness - nightAtmosphereThickness) * dot) + nightAtmosphereThickness;
         skyMat.SetFloat("_AtmosphereThickness", i);
@@ -77,4 +83,6 @@ public class TheSunAndMoon : MonoBehaviour {
 
 
     }
+
+
 }
