@@ -1,108 +1,80 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class TheSunAndMoon : MonoBehaviour {
+    public Gradient nightDayColor;
 
-    public Gradient nightdaycolor;
-    public float lowestSunPoint = -0.2f;
-    public float maxIntensity = 2f;
-    public float minIntensity = 0.1f;
-    public Light sun;
-    //public Light moon;
+    public float maxIntensity = 3f;
+    public float minIntensity = 0f;
+    
 
-    public float time;
-    public float daySpeed;
-    public float nightSpeed;
-    public string timeOfDay;
+    public Gradient nightDayFogColor;
+    public AnimationCurve fogDensityCurve;
+    public float fogScale = 1f;
+
+    public float dayAtmosphereThickness = 0.4f;
+    public float nightAtmosphereThickness = 0.87f;
+    public int daySpeed = 0;
+    public int nightSpeed = 0;
+    public string timeofDay;
+    
+
+    float skySpeed = 1;
 
     [HideInInspector]
-    public float timeMod;
+    public float minPoint = -0.2f;
+    Vector3 dayRotateSpeed;
+    Vector3 nightRotateSpeed;
+
+
     
-    //bool start = false;
+    
+
+    Light mainLight;
+    Skybox sky;
+    Material skyMat;
 
     void Start()
     {
-        time = 0f;
-        //start = true;
-        timeOfDay = "midnight";
-    }
 
+        mainLight = GetComponent<Light>();
+        skyMat = RenderSettings.skybox;
+        dayRotateSpeed[0] = daySpeed;
+        nightRotateSpeed[0] = nightSpeed;
+    }
 
     void Update()
     {
-        UpdateTime();
-        UpdateTimeOfDay();
-        UpdateLighting();
-        UpdateEnvironmentColor();
 
-
-    }
-    void UpdateTime(){
-
-        if (time >= 700f && time <= 1800f)
-        {
-            timeMod = daySpeed * 50;
-        }
-        else
-        {
-            timeMod = nightSpeed*50;
-        }
-            time += Mathf.RoundToInt(Time.deltaTime * timeMod);
-
-        if (time > 2400f)
-        {
-            time = time - 2400f;
-        }
-        
-    }
-
-    void UpdateLighting()
-    {
-        // noon = sun straight down = 90degs x angle  f(1200) = 90
-        // f(2400) = 270, f(0) = 270
-
-        // simple thing to change the main light angle based on time of day
-        var xAngle = (time - 600f) * 0.15f;
-        sun.transform.localRotation = Quaternion.Euler(xAngle, -30f, 0f);
-    }
-
-    void UpdateTimeOfDay()
-    {
-        // Times of day include
-        // dawn, morning, noon, afternoon, dust, evening, night, midnight, late night
-        var oldTimeOfDay = timeOfDay;
-
-        // i dunno about these specific ranges haha - nic L.
-        if ((time > 0 && time < 400) || (time >= 2200 && time <= 2400))
-            timeOfDay = "midnight";
-        else if (time >= 700 && time < 1100)
-            timeOfDay = "morning";
-        else if (time >= 1100 && time < 1300)
-            timeOfDay = "noon";
-        else if (time >= 1300 && time < 1600)
-            timeOfDay = "afternoon";
-        else if (time >= 1600 && time < 1800)
-            timeOfDay = "evening";
-        else if (time >= 1800 && time < 2200)
-            timeOfDay = "lateNigh";
-
-        // etc. 
-
-        if (timeOfDay != oldTimeOfDay)
-        {
-            // the time of day changed, trigger time specific events
-            // eg. shops open, shops close, street lights turn on
-
-        }
-    }
-    void UpdateEnvironmentColor()
-    {
-        float tRange = 1 - lowestSunPoint;
-        float dot = Mathf.Clamp01((Vector3.Dot(sun.transform.forward, Vector3.down) - lowestSunPoint) / tRange);
+        float rangeSun = 1 - minPoint;
+        float dot = Mathf.Clamp01((Vector3.Dot(mainLight.transform.forward, Vector3.down) - minPoint) / rangeSun);
         float i = ((maxIntensity - minIntensity) * dot) + minIntensity;
-        Debug.Log(dot);
-        sun.intensity = i;
-        sun.color = nightdaycolor.Evaluate(dot);
+
+        mainLight.intensity = i;
+
+        mainLight.color = nightDayColor.Evaluate(dot);
+        RenderSettings.ambientLight = mainLight.color;
+
+        RenderSettings.fogColor = nightDayFogColor.Evaluate(dot);
+        RenderSettings.fogDensity = fogDensityCurve.Evaluate(dot) * fogScale;
+
+        i = ((dayAtmosphereThickness - nightAtmosphereThickness) * dot) + nightAtmosphereThickness;
+        skyMat.SetFloat("_AtmosphereThickness", i);
+
+        if (dot > 0)
+            transform.Rotate(dayRotateSpeed * Time.deltaTime * skySpeed);
+        else
+            transform.Rotate(nightRotateSpeed * Time.deltaTime * skySpeed);
+
+        float angle = transform.localEulerAngles.x;
+        print(angle);
+        if (angle > 0f && angle <= 90f) {
+            timeofDay = "Day";
+        }
+        else {
+            timeofDay = "Night";
+        }
+
+
     }
 }
