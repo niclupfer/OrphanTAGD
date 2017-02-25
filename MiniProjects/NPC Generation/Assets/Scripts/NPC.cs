@@ -11,6 +11,8 @@ public class NPC : MonoBehaviour
     public Transform nextNode;
     public int nextNodeIndex;
 
+    public bool enableDecision = true;
+
 
     public float minWalkSpeed = 4f;
     public float maxWalkSpeed = 8f;
@@ -118,10 +120,15 @@ public class NPC : MonoBehaviour
     {
         obstacleDetected = true;
     }
+
     public void decisionMaking()
     {
-        int decision = Random.Range(0, 7);
- //       decision = -1;  //uncomment this line to disable decision making
+        int decision = Random.Range(0, 11);
+
+        // use inspector on NPC prefab to enable or disable decision making
+        if (!enableDecision)
+            decision = -1; 
+       
         switch (decision)
         {
             case 0:
@@ -138,13 +145,27 @@ public class NPC : MonoBehaviour
                 else
                     reverseDir = true;
                 break;
-            case 3:case 4:case 5:case 6:
+            case 3:
+                // hangs out for five seconds
+                StartCoroutine(chillOut(Random.Range(3f, 8f)));
+                break;
+            case 4:case 5:case 6:
+            case 7:case 8:case 9:
+            case 10:
                 // do nothing and stay on current path
                 break;
             default:
                 // shouldn't be here
                 break;
         }
+    }
+
+    IEnumerator chillOut(float duration)
+    {
+        float tempSpeed = walkingSpeed;
+        walkingSpeed = 0f;
+        yield return new WaitForSeconds(duration);
+        walkingSpeed = tempSpeed;
     }
 
     void crossStreet(int whichWay)

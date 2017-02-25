@@ -26,7 +26,7 @@ public class AudioManager : MonoBehaviour {
 
         for (int i = 0; i < SFX.Length; ++i)
         {
-            if (!SFX[i].isPlaying && SFX[i].tag == "SFXcontroller")
+            if (!SFX[i].isPlaying)//&& SFX[i].tag == "SFXcontroller")
             {
                 SFX[i].pitch = randomPitch;
                 SFX[i].PlayOneShot(sfxToPlay, volumeControl);
