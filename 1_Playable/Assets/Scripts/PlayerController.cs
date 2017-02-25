@@ -7,8 +7,6 @@ public class PlayerController : MonoBehaviour {
     public float speed;
 	private float speedMod = 1f;
 
-	public float thrust; //modifies how high up the orphan jumps
-
 	private Rigidbody rb;
 	private Animator anim;
 
@@ -55,8 +53,6 @@ public class PlayerController : MonoBehaviour {
 
 	void Update ()
 	{
-		Debug.Log(rb.transform.position);//there's no sprite right now, so using this to check the player's position
-
         if (!playable || dead)
         {
             moveSideways = 0;
@@ -89,12 +85,6 @@ public class PlayerController : MonoBehaviour {
             hiding = false;
         }
         anim.SetBool("Hiding", hiding);
-
-		if (Input.GetButtonDown("Jump"))
-		{
-			anim.SetTrigger("Jump");
-			rb.AddForce(transform.up * thrust, ForceMode.Force);
-		}
 
         /*
         if (Input.GetButtonDown("Jump"))
