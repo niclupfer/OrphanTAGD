@@ -82,15 +82,18 @@ public class FollowCamera : MonoBehaviour
         Vector3 position = new Vector3(offset.x, offset.y, -dist * 2) + tarPos;// target.position ;
         //Vector3 position = new Vector3(offset.x, offset.y, -dist) + target.position;
         //transform.position = Vector3.Lerp(transform.position, position, smoothing * Time.deltaTime);
-        transform.position = position;
+        //transform.position = position;
 
         
 
-        transform.position = RotatePointAroundPivot(transform.position,
+        position = RotatePointAroundPivot(position,
                                 tarPos,//target.position,
                                 transform.localRotation);
 
-        if(transform.position.y < 0.5f)
+        transform.position = position;
+        //transform.position = Vector3.Lerp(transform.position, position, smoothing * Time.deltaTime);
+
+        if (transform.position.y < 0.5f)
         {
             transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
         }

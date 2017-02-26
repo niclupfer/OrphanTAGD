@@ -74,7 +74,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleCurves: 1
+    resampleRotations: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -91,7 +91,7 @@ ModelImporter:
     - serializedVersion: 16
       name: running_forward_flip
       takeName: mixamo.com
-      firstFrame: 0
+      firstFrame: 9.6
       lastFrame: 33
       wrapMode: 0
       orientationOffsetY: 0
@@ -102,8 +102,8 @@ ModelImporter:
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
