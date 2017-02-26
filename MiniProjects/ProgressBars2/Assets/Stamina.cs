@@ -3,9 +3,11 @@ using System.Collections;
 
 public class Stamina : MonoBehaviour {
     GameObject emptyBar;
+    GameObject emptyBar2;
     public float stamina = 100;
     public float StaminaRate;
     public float exhaustion;
+    public float slowerRate;
     // Use this for initialization
     Vector3 startPos;
 
@@ -15,8 +17,10 @@ public class Stamina : MonoBehaviour {
 
     private void Start()
     {
-        emptyBar = GameObject.Find("Stamina Empty");
+        emptyBar = GameObject.Find("Stamina Bar");
+        emptyBar2 = GameObject.Find("Slower bar");
         startPos = emptyBar.GetComponent<RectTransform>().localPosition;
+        startPos = emptyBar2.GetComponent<RectTransform>().localPosition;
     }
 
     // Update is called once per frame
@@ -24,14 +28,15 @@ public class Stamina : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            UseStamina(Time.deltaTime * exhaustion);
-            emptyBar.GetComponent<RectTransform>().localPosition = new Vector3(stamina, startPos.y, startPos.z);
+            UseStamina(Time.deltaTime * exhaustion);            
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             UseStamina(5);
-            emptyBar.GetComponent<RectTransform>().localPosition = new Vector3(stamina, startPos.y, startPos.z);
         }
+
+
+        /////////
 
         /*
         if (Input.GetKey(KeyCode.LeftShift))
@@ -46,18 +51,21 @@ public class Stamina : MonoBehaviour {
       
         }*/
 
-
         if (stamina < 100 && Time.time > lastTimeUsed + staminaRechargeTime) // and its been rechargeTime since last stamina use, then recharge
         {
             stamina += Time.deltaTime * StaminaRate;
-            emptyBar.GetComponent<RectTransform>().localPosition = new Vector3(stamina, startPos.y, startPos.z);
         }
         if (stamina > 100)
         {
             stamina = 100;
-            emptyBar.GetComponent<RectTransform>().localPosition = new Vector3(stamina, startPos.y, startPos.z);
         }
 
+        var barX = -100 + stamina;
+        emptyBar.GetComponent<RectTransform>().localPosition = new Vector3(barX, startPos.y, startPos.z);
+
+        // the slow bar
+        var slowX = Mathf.SmoothStep(emptyBar2.GetComponent<RectTransform>().localPosition.x, barX, 0.03f);
+        emptyBar2.GetComponent<RectTransform>().localPosition = new Vector3(slowX, startPos.y, startPos.z);
     }
 
     public bool UseStamina(float staminaToUse)
