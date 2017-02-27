@@ -1,0 +1,17 @@
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/UnityEngine.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/UnityEditor.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/UnityEngine.UI.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/UnityEngine.Networking.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/Mono.Cecil.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/Unity.SerializationLogic.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/Unity.DataContract.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/ICSharpCode.NRefactory.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/Unity.UNetWeaver.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/Unity.CecilTools.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/Mono.Cecil.Pdb.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/obj/Debug/Assembly-CSharp.dll
+/Users/Jasmine/Documents/GitHub/OrphansCreed/MiniProjects/randomNames/New Unity Project/obj/Debug/Assembly-CSharp.dll.mdb
