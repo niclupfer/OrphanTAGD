@@ -34,25 +34,23 @@ public class generateNames : MonoBehaviour {
 	}
 
 
-
-	string getFirstName(string[] arg){
+	/*****NAMES*****/
+	string getFirstName(string[] arg){//returns a random first name from the fnArray
 		string fn = arg[UnityEngine.Random.Range(0,arg.Length)];
 		return fn;
 	}
-
-	string getFirstNameSpecial(string[] arg1, string[] arg2){
+	string getFirstNameSpecial(string[] arg1, string[] arg2){//Returns a first name with a cool prefix i.e. "The Great Peter"
 		string fnPrefix = arg1[UnityEngine.Random.Range(0,arg1.Length)];
 		string fnRoot = arg2[UnityEngine.Random.Range(0,arg2.Length)];
 		string firstName = String.Concat(fnPrefix, " ", fnRoot);
 		return firstName;
 	}
 
-	string getLastName(string[] arg1){
+	string getLastName(string[] arg1){//returns a random last name from the lnArray
 		string lastName = arg1[UnityEngine.Random.Range(0,arg1.Length)];
 		return lastName;
 	}
-
-	string getLastNameSpecial(string[] arg1, string[] arg2, string[] arg3){
+	string getLastNameSpecial(string[] arg1, string[] arg2, string[] arg3){//Either returns a lastname with a suffix, a last name with a cool title, or both i.e. "Robertsburg the Penniless"
 		int choice = UnityEngine.Random.Range(0,2);
 		if (choice == 1){
 			string lnRoot = arg1[UnityEngine.Random.Range(0,arg1.Length)];
@@ -71,16 +69,16 @@ public class generateNames : MonoBehaviour {
 
 
 
-
-	string getCityPrefix(string[]arg){
+	/****CITIES****/
+	string getCityPrefix(string[]arg){//Returns a city prefix
 		string prefix = arg[UnityEngine.Random.Range(0,arg.Length)];
 		return prefix;
 	}
-	string getCityRoot(string[] arg){
+	string getCityRoot(string[] arg){//Returns a city root
 		string city = arg[UnityEngine.Random.Range(0,arg.Length)];
 		return city;
 	}
-	string getCityRootSpecial(string[] arg1, string[] arg2){
+	string getCityRootSpecial(string[] arg1, string[] arg2){//returns a city root with a cool suffix
 		string cityRoot = arg1[UnityEngine.Random.Range(0,arg1.Length)];
 		string citySuffix = arg2[UnityEngine.Random.Range(0,arg2.Length)];
 
@@ -93,7 +91,8 @@ public class generateNames : MonoBehaviour {
 	}
 
 
-	void printName() {
+	/****BUTTON STUFF****/
+	void printName() {//onClick function
 		string firstName = "VOID";
 		string lastName = "VOID";
 
@@ -119,7 +118,7 @@ public class generateNames : MonoBehaviour {
 		nameText.text = fullName;
 	}
 
-	void printCity(){
+	void printCity(){//onClick function
 		string cityPrefix = "VOID";
 		string cityRoot = "VOID";
 
