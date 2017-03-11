@@ -73,6 +73,7 @@ public class NodeController : MonoBehaviour {
                 createNPC.GetComponent<NPC>().currentNode = nodes[i].transform;
                 createNPC.GetComponent<NPC>().nodeCtrl = this;
                 createNPC.GetComponent<NPC>().currentNodeIndex = i;
+                createNPC.GetComponent<NPC>().state = global::NPC.State.PATROL;
             }
             generateMoreNPC = false;
         }

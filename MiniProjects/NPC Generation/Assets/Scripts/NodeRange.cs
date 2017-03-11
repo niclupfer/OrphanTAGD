@@ -15,7 +15,7 @@ public class NodeRange : MonoBehaviour {
     // does this to detect for starting only
     void OnTriggerStay(Collider col)
     {
-        if (nodeCtrl != null && col.tag == "Player" && !nodeCtrl.activeNodeCtrl && startOnly)
+        if (startOnly && nodeCtrl != null && col.tag == "Player" && !nodeCtrl.activeNodeCtrl)
         {
             startOnly = false;
        //     Debug.Log("Starting nodes created");

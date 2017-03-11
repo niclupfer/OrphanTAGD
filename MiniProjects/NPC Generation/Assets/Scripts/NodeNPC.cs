@@ -33,6 +33,7 @@ public class NodeNPC : MonoBehaviour {
                             --npc.nextNodeIndex;
                     }
                     npc.nextNode = npc.nodeCtrl.nodes[npc.nextNodeIndex].transform;
+                    npc.currDestination = npc.nextNode.position;
                 }
             }
         }

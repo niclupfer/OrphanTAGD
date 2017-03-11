@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour {
 
         speedMod = 1f;
 
-        if (Input.GetButton("Sprint") || Input.GetAxis("Sprint Trigger") > 0.8f)
+        if (Input.GetButton("Sprint"))// || Input.GetAxis("Sprint Trigger") > 0.8f)
         {
             sprinting = true;
             speedMod = 1.5f;
@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour {
             sprinting = false;
         }
 
-        if (Input.GetButton("Sneak"))
+  /*      if (Input.GetButton("Sneak"))
         {
             hiding = true;
             speedMod = 0.5f;
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour {
         {
             hiding = false;
         }
-        //anim.SetBool("Hiding", hiding);
+    */    //anim.SetBool("Hiding", hiding);
 
         
         if (Input.GetButtonDown("Jump"))

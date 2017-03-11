@@ -4,30 +4,47 @@ using UnityEngine;
 
 public class NPC : MonoBehaviour
 {
-    enum directions {north, east, south, west};
+    // CONSTANTS
+    // Different states of NPCs
+    // IDLE: Stand still
+    // PATROL: Patrol around city block to block (Random NPCs)
+    // FREEROAM: Wander without being tied to a node controller (use for special NPCs)
+    // CHASE: Chase character state
+
+    public enum State { IDLE, PATROL, FREEROAM, CHASE };
+    enum directions { north, east, south, west };
+
+
+    [HideInInspector]
     public Transform currentNode;
+    [HideInInspector]
     public int currentNodeIndex;
+    [HideInInspector]
     public NodeController nodeCtrl;
+    [HideInInspector]
     public Transform nextNode;
+    [HideInInspector]
     public int nextNodeIndex;
+    [HideInInspector]
+    public Vector3 currDestination;
 
     public bool enableDecision = true;
-
-
+    
     public float minWalkSpeed = 4f;
-    public float maxWalkSpeed = 8f;
-    public float turningSpeed = 4f;
-    private float walkingSpeed;
-
-    public Transform eyes;
-
-
-    public bool isPatrol = true;
+    public float maxWalkSpeed = 12f;
+    public float turningSpeed = 10f;
+  //  [HideInInspector]
+    public float walkingSpeed;
+    
     public bool reverseDir = false;
 
+    [HideInInspector]
     public int lastNodeIndex;
-    private bool startLooking = true;
-    private bool obstacleDetected = false;
+    public bool obstacleDetected = false;
+    private bool crossedStreet = false;
+    private Animator anim;
+    
+    public State state = State.IDLE;
 
     // Use this for initialization
 
@@ -35,118 +52,147 @@ public class NPC : MonoBehaviour
     {
         // randomize stats
         walkingSpeed = Random.Range(minWalkSpeed, maxWalkSpeed);
-        lastNodeIndex = nodeCtrl.nodes.Length - 1;
-        // randomize direction of block walking
-        int randomDir = Random.Range(0, 2);
-        if (randomDir == 1)
+        anim = GetComponent<Animator>();
+        if (state != State.FREEROAM)
         {
-            reverseDir = true;
-            if (currentNodeIndex == 0)
+            lastNodeIndex = nodeCtrl.nodes.Length - 1;
+            // randomize direction of block walking
+            int randomDir = Random.Range(0, 2);
+            if (randomDir == 1)
             {
-                nextNodeIndex = lastNodeIndex;
-                nextNode = nodeCtrl.nodes[lastNodeIndex].transform;
+                reverseDir = true;
+                if (currentNodeIndex == 0)
+                {
+                    nextNodeIndex = lastNodeIndex;
+                    nextNode = nodeCtrl.nodes[lastNodeIndex].transform;
+                }
+                else
+                {
+                    nextNodeIndex = currentNodeIndex - 1;
+                    nextNode = nodeCtrl.nodes[nextNodeIndex].transform;
+                }
             }
             else
             {
-                nextNodeIndex = currentNodeIndex - 1;
-                nextNode = nodeCtrl.nodes[nextNodeIndex].transform;
-                
+                if (currentNodeIndex != lastNodeIndex)
+                {
+                    nextNodeIndex = currentNodeIndex + 1;
+                    nextNode = nodeCtrl.nodes[nextNodeIndex].transform;
+                }
+                else
+                {
+                    nextNodeIndex = 0;
+                    nextNode = nodeCtrl.nodes[0].transform;
+                }
             }
+            currDestination = nextNode.position;
         }
-        else
-        {
-            if (currentNodeIndex != lastNodeIndex)
-            {
-                nextNodeIndex = currentNodeIndex + 1;
-                nextNode = nodeCtrl.nodes[nextNodeIndex].transform;
-            }
-            else
-            {
-                nextNodeIndex = 0;
-                nextNode = nodeCtrl.nodes[0].transform;
-            }
-        }
-        }
+        if (state == State.FREEROAM)
+            currDestination = transform.forward;
+    }
+
     void Awake()
     {
-        isPatrol = true;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (isPatrol)
+    }
+
+    void FixedUpdate()
+    {
+        if (state == State.PATROL)
         {
-            if (startLooking)
-            {
-                StartCoroutine(lookForObstacles());
-                Vector3 fwd = transform.TransformDirection(Vector3.forward);
-                RaycastHit hit;
-                if (Physics.SphereCast(transform.position, 4*transform.localScale.z, fwd, out hit, 20f))
-                {
-                    if (hit.transform.gameObject.layer == 8)
-                    {
-                        Debug.DrawLine(transform.position, hit.point, Color.red, 1f);
-                        obstacleDetected = true;                    
-                    }
-                }
-                else
-                    obstacleDetected = false;
-            }
-            if (!obstacleDetected)
-            {
-                float step = walkingSpeed * Time.deltaTime;
-                float turnStep = turningSpeed * Time.deltaTime;
-                Vector3 targetDir = nextNode.position - transform.position;
-                targetDir.y = 0;
-                var rotation = Quaternion.LookRotation(targetDir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, turnStep);
-                transform.position = Vector3.MoveTowards(transform.position, nextNode.position, step);
-            }else
-            {
-                float step = walkingSpeed * Time.deltaTime;
-                float turnStep = turningSpeed * Time.deltaTime;
-                Vector3 targetDir = nextNode.position - transform.position;
-                targetDir.y = 0;
-                var rotation = Quaternion.LookRotation(targetDir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, turnStep);
-                transform.position = Vector3.MoveTowards(transform.position, nextNode.position, step);
-            }
+            patrolBlocks();
+        }
+        if (state == State.FREEROAM) {
+            roamCity();
         }
     }
 
-    public void obstacleAvoidance(Transform obs)
+    void patrolBlocks()
     {
-        obstacleDetected = true;
+        if (!obstacleDetected)
+        {
+            npcLook(currDestination);
+            npcMove(currDestination);
+        }
+        else
+        {
+            npcMove(transform.forward);
+        }
     }
 
+    void roamCity()
+    {
+        
+    }
+
+    public void npcMove(Vector3 destination)
+    {
+        float step = walkingSpeed * Time.deltaTime;
+        destination.y = transform.position.y;
+        Debug.Log("Destination: " + destination + " Transform Pos: " + transform.position);
+        transform.position = Vector3.MoveTowards(transform.position, destination, step);
+        anim.SetFloat("Speed", Mathf.Abs(walkingSpeed));
+    }
+
+    public void npcLook(Vector3 destination)
+    {
+        float turnStep = turningSpeed * Time.deltaTime;
+        Vector3 dir = destination - transform.position;
+        dir.y = 0;
+        var rotation = Quaternion.LookRotation(dir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, turnStep);
+    }
+   
+    public void veer(float turnDirection)
+    {
+        float turnStep = turningSpeed * Time.deltaTime;
+        Quaternion turn = Quaternion.LookRotation(transform.forward);
+        turn *= Quaternion.Euler(0, turnDirection, 0);
+        Debug.Log(turn);
+        transform.rotation = Quaternion.Slerp(transform.rotation, turn, turnStep);
+    }
+
+    // FUNCTION TO IMPLEMENT CHOICES OF EACH NPC AT EACH NODE~~~~~~~~~~~~~
     public void decisionMaking()
     {
         int decision = Random.Range(0, 11);
 
         // use inspector on NPC prefab to enable or disable decision making
+        // simply add a case if none are available and increase random's range
+        // if there are empty cases, choose any and add code, but make sure to break
         if (!enableDecision)
             decision = -1; 
        
         switch (decision)
         {
             case 0:
-                crossStreet(decision);
+                if (!crossedStreet)
+                    crossStreet(decision);
+                else
+                    crossedStreet = true;
                 break;
             case 1:
                 // cross street in a different direction
-                crossStreet(decision);
+                if (!crossedStreet)
+                    crossStreet(decision);
+                else
+                    crossedStreet = true;
                 break;
             case 2:
                 // change direction
+                StartCoroutine(chillOut(1.5f));
                 if (reverseDir)
                     reverseDir = false;
                 else
                     reverseDir = true;
                 break;
             case 3:
-                // hangs out for five seconds
+                // hangs out for five second
                 StartCoroutine(chillOut(Random.Range(3f, 8f)));
                 break;
             case 4:case 5:case 6:
@@ -155,12 +201,13 @@ public class NPC : MonoBehaviour
                 // do nothing and stay on current path
                 break;
             default:
-                // shouldn't be here
+                // for disabling purposes
                 break;
-        }
+        }        
     }
 
-    IEnumerator chillOut(float duration)
+    // makes dude hang out
+    public IEnumerator chillOut(float duration)
     {
         float tempSpeed = walkingSpeed;
         walkingSpeed = 0f;
@@ -170,6 +217,7 @@ public class NPC : MonoBehaviour
 
     void crossStreet(int whichWay)
     {
+        crossedStreet = true;
         switch (nextNodeIndex)
         {
             case 1:
@@ -224,6 +272,7 @@ public class NPC : MonoBehaviour
                 break;
         }
         nextNode = nodeCtrl.nodes[nextNodeIndex].transform;
+        currDestination = nextNode.position;
     }
 
     void changeNodeCtrl(directions dir)
@@ -283,12 +332,5 @@ public class NPC : MonoBehaviour
                     return true;
         }
         return false;
-    }
-
-    IEnumerator lookForObstacles()
-    {
-        startLooking = false;
-        yield return new WaitForSeconds(0f);
-        startLooking = true;
-    }
+    }    
 }
