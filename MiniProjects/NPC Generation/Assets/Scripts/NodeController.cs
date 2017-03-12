@@ -67,7 +67,7 @@ public class NodeController : MonoBehaviour {
             nodeNPCs.transform.parent = transform;
             for (int i = 0; i < numToGen; ++i)
             {
-                Vector3 nodePos = new Vector3(nodes[i].transform.position.x, nodes[i].transform.position.y + 2, nodes[i].transform.position.z);
+                Vector3 nodePos = new Vector3(nodes[i].transform.position.x, nodes[i].transform.position.y, nodes[i].transform.position.z);
                 var createNPC = Instantiate(NPC, nodePos, nodes[i].transform.rotation);
                 createNPC.gameObject.transform.parent = nodeNPCs.transform;
                 createNPC.GetComponent<NPC>().currentNode = nodes[i].transform;

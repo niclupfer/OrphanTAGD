@@ -25,15 +25,18 @@ public class NPC : MonoBehaviour
     public Transform nextNode;
     [HideInInspector]
     public int nextNodeIndex;
+
+    public Transform currDest;
     [HideInInspector]
     public Vector3 currDestination;
+    public bool readyToLook = true;
 
     public bool enableDecision = true;
     
     public float minWalkSpeed = 4f;
     public float maxWalkSpeed = 12f;
     public float turningSpeed = 10f;
-  //  [HideInInspector]
+    [HideInInspector]
     public float walkingSpeed;
     
     public bool reverseDir = false;
@@ -43,6 +46,9 @@ public class NPC : MonoBehaviour
     public bool obstacleDetected = false;
     private bool crossedStreet = false;
     private Animator anim;
+
+    [HideInInspector]
+    public bool chilling = false;
     
     public State state = State.IDLE;
 
@@ -51,6 +57,7 @@ public class NPC : MonoBehaviour
     void Start()
     {
         // randomize stats
+        
         walkingSpeed = Random.Range(minWalkSpeed, maxWalkSpeed);
         anim = GetComponent<Animator>();
         if (state != State.FREEROAM)
@@ -87,8 +94,18 @@ public class NPC : MonoBehaviour
             }
             currDestination = nextNode.position;
         }
-        if (state == State.FREEROAM)
-            currDestination = transform.forward;
+    /*    if (state == State.FREEROAM)
+        {
+            var thisPos = transform.position;
+            var fwd = transform.forward;
+            var ahead = thisPos + fwd * 8;
+            ahead.y = 0;
+            if (currDest == null)
+                currDestination = ahead;
+            else
+                currDestination = currDest.position;
+        }*/
+            
     }
 
     void Awake()
@@ -121,20 +138,38 @@ public class NPC : MonoBehaviour
         }
         else
         {
-            npcMove(transform.forward);
+            var thisPos = transform.position;
+            var fwd = transform.forward;
+            var ahead = thisPos + fwd * 8;
+            ahead.y = 0;
+            npcLook(ahead);
+            npcMove(ahead);
         }
     }
 
     void roamCity()
     {
-        
+        if (!obstacleDetected)
+        {
+            
+            npcLook(currDestination);            
+            npcMove(currDestination);
+        }
+        else
+        {
+            var thisPos = transform.position;
+            var fwd = transform.forward;
+            var ahead = thisPos + fwd * 8;
+            ahead.y = 0;
+            npcLook(ahead);
+            npcMove(ahead);
+        }
     }
 
     public void npcMove(Vector3 destination)
     {
         float step = walkingSpeed * Time.deltaTime;
         destination.y = transform.position.y;
-        Debug.Log("Destination: " + destination + " Transform Pos: " + transform.position);
         transform.position = Vector3.MoveTowards(transform.position, destination, step);
         anim.SetFloat("Speed", Mathf.Abs(walkingSpeed));
     }
@@ -143,9 +178,10 @@ public class NPC : MonoBehaviour
     {
         float turnStep = turningSpeed * Time.deltaTime;
         Vector3 dir = destination - transform.position;
-        dir.y = 0;
-        var rotation = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, turnStep);
+        dir.y = 0;        
+        var turn = Quaternion.LookRotation(transform.forward);
+        turn *= Quaternion.Euler(0, Vector3.Angle(transform.forward, dir), 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, turn, turnStep);
     }
    
     public void veer(float turnDirection)
@@ -153,7 +189,6 @@ public class NPC : MonoBehaviour
         float turnStep = turningSpeed * Time.deltaTime;
         Quaternion turn = Quaternion.LookRotation(transform.forward);
         turn *= Quaternion.Euler(0, turnDirection, 0);
-        Debug.Log(turn);
         transform.rotation = Quaternion.Slerp(transform.rotation, turn, turnStep);
     }
 
@@ -192,7 +227,7 @@ public class NPC : MonoBehaviour
                     reverseDir = true;
                 break;
             case 3:
-                // hangs out for five second
+                // hangs out for 3-8 secs
                 StartCoroutine(chillOut(Random.Range(3f, 8f)));
                 break;
             case 4:case 5:case 6:
@@ -210,9 +245,13 @@ public class NPC : MonoBehaviour
     public IEnumerator chillOut(float duration)
     {
         float tempSpeed = walkingSpeed;
+        chilling = true;
         walkingSpeed = 0f;
+        readyToLook = false;
         yield return new WaitForSeconds(duration);
         walkingSpeed = tempSpeed;
+        readyToLook = true;
+        chilling = false;
     }
 
     void crossStreet(int whichWay)

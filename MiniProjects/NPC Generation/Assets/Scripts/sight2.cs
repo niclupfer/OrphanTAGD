@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class sight2 : MonoBehaviour
 {
-    enum DangerState { white = 8, yellow = 6, orange = 4, red = 1 }
+    enum DangerState { white = 8, yellow = 5, orange = 4, red = 3 }
 
     SphereCollider sphere;
     public float heightMultiplier;
@@ -15,12 +15,14 @@ public class sight2 : MonoBehaviour
 
     [HideInInspector]
     public float sightDistance;
-    public bool readyToLook = true;
-    public bool obstacleDetected = false;
     public bool intruder = false;
     public float castWidth = 3f;
 
     private bool slowCRrunning = false;
+
+    //debug variables
+    public float backCastOffset = 2f;
+    public float timeToLook = .2f;
 
     // Use this for initialization
     void Start()
@@ -28,6 +30,7 @@ public class sight2 : MonoBehaviour
         sphere = GetComponent<SphereCollider>();
         sightDistance = sphere.radius;
         npc = GetComponentInParent<NPC>();
+        
         
     }
 
@@ -50,49 +53,36 @@ public class sight2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {    
-        if (!obstacleDetected)
-        {
-            var moveTo = currDest.transform.position;
-            moveTo.y = 0;
-            npc.npcLook(moveTo);
-            npc.npcMove(moveTo);
-        }
-        else
-        {
-            var thisPos = npc.transform.position;
-            var fwd = npc.transform.forward;
-            var ahead = thisPos + fwd* sightDistance;
-            ahead.y = 0;
-            Debug.Log("ahead: " + ahead);
-            npc.npcLook(ahead);
-            npc.npcMove(ahead);
-        }
+        
     }
 
     void FixedUpdate()
     {        
         if (intruder)
         {
-            Debug.DrawRay(transform.position + Vector3.up * (heightMultiplier - rayOffset / 2), transform.forward * sightDistance, Color.blue);
+            var back = (transform.position + Vector3.up * (heightMultiplier - rayOffset / 2)) - transform.forward * backCastOffset;
+         //   Debug.DrawRay(back, transform.forward * sightDistance, Color.red);
 
             RaycastHit hit;
-            if (readyToLook)
+            if (npc.readyToLook)
             {
-                StartCoroutine(notReadyToLook(.2f));
+                StartCoroutine(notReadyToLook(timeToLook));
                 var avoidance_force = Vector3.zero;
-                if (Physics.SphereCast(transform.position + Vector3.up * (heightMultiplier - rayOffset / 2), castWidth, transform.forward * sightDistance, out hit, sightDistance, 1 << 8))
+                if (Physics.SphereCast(back, castWidth, transform.forward * sightDistance, out hit, sightDistance, 1 << 8))
                 {
-                    obstacleDetected = true;
-                    state = getDangerState(hit.distance);
-                    Debug.Log(hit.distance + " " + state + " " + hit.transform.name);
+                    npc.obstacleDetected = true;
+                    state = getDangerState(hit.distance - backCastOffset);
+            //        Debug.Log(hit.distance + " " + state + " " + hit.transform.name);
                     if (Vector3.Angle(transform.right, hit.point - npc.transform.position) <= 90)
                         npc.veer(-((int)DangerState.white - (int)state) * 10);
                     else
                         npc.veer(((int)DangerState.white - (int)state) * 10);
+                    if (hit.distance <= 0.1)
+                        npc.veer(180);
 
                 }
                 else
-                    obstacleDetected = false;
+                    npc.obstacleDetected = false;
 
             }
 
@@ -101,9 +91,10 @@ public class sight2 : MonoBehaviour
 
     IEnumerator notReadyToLook(float time)
     {
-        readyToLook = false;
+        npc.readyToLook = false;
         yield return new WaitForSeconds(time);
-        readyToLook = true;
+        if(!npc.chilling)
+            npc.readyToLook = true;
     }
 
     
