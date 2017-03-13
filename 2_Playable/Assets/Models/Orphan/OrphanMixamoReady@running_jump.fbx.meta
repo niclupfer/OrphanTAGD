@@ -74,25 +74,25 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
     animationImportWarnings: "\nDefault bone length found in this file is different
       form the one found in the source avatar:\n\t'L_UPR_LEG' : position error = 158.147827
       mm\n\t'L_MID_LEG' : position error = 453.871246 mm\n\t'L_ANK' : position error
-      = 305.335968 mm\n\t'L_TOE' : position error = 84.201744 mm\n\t'R_UPR_LEG2' :
-      position error = 158.147827 mm\n\t'R_MID_LEG1' : position error = 453.869629
+      = 305.335907 mm\n\t'L_TOE' : position error = 84.201706 mm\n\t'R_UPR_LEG2' :
+      position error = 158.147827 mm\n\t'R_MID_LEG1' : position error = 453.869690
       mm\n\t'R_ANK1' : position error = 305.335602 mm\n\t'R_TOE1' : position error
-      = 84.201759 mm\n\t'SPINE_ONE' : position error = 198.078979 mm\n\t'Collar' :
-      position error = 329.718994 mm\n\t'NECK' : position error = 140.262894 mm\n\t'joint1'
-      : position error = 603.660706 mm\n\t'R_clavicle' : position error = 37.166904
-      mm\n\t'R_shoulder' : position error = 127.489059 mm\n\t'R_elbow' : position
-      error = 292.923340 mm\n\t'R_forearm' : position error = 101.410080 mm\n\t'R_wrist'
-      : position error = 118.753021 mm\n\t'L_clavicle' : position error = 37.166912
-      mm\n\t'L_shoulder' : position error = 127.488899 mm\n\t'L_elbow' : position
+      = 84.201797 mm\n\t'SPINE_ONE' : position error = 198.078979 mm\n\t'Collar' :
+      position error = 329.718994 mm\n\t'NECK' : position error = 140.262924 mm\n\t'joint1'
+      : position error = 603.661011 mm\n\t'R_clavicle' : position error = 37.166920
+      mm\n\t'R_shoulder' : position error = 127.489182 mm\n\t'R_elbow' : position
+      error = 292.923859 mm\n\t'R_forearm' : position error = 101.410271 mm\n\t'R_wrist'
+      : position error = 118.753281 mm\n\t'L_clavicle' : position error = 37.166927
+      mm\n\t'L_shoulder' : position error = 127.488930 mm\n\t'L_elbow' : position
       error = 292.922882 mm\n\t'L_forearm' : position error = 101.410492 mm\n\t'L_wrist'
-      : position error = 121.853905 mm\n\nInbetween bone default rotation found in
+      : position error = 121.853958 mm\n\nInbetween bone default rotation found in
       this file is different from the one found in the source avatar:\n\t'R_forearm'
       : rotation error = 16.777937 deg\n\t'L_forearm' : rotation error = 38.480782
       deg\n\nClip 'mixamo.com' has import animation warnings that might lower retargeting
@@ -115,19 +115,19 @@ ModelImporter:
       lastFrame: 27
       wrapMode: 0
       orientationOffsetY: 0
-      level: -0.7
+      level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
-      loopBlendPositionY: 0
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
-      heightFromFeet: 0
+      heightFromFeet: 1
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []

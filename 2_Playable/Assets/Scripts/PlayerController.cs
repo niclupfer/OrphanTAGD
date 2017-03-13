@@ -39,7 +39,16 @@ public class PlayerController : MonoBehaviour {
 
     public float jumpSpeed;
     public float jumpTime;
+	public float jumpDelay_standing;
+	public float jumpDelay_running;
+	public float jumpDelay_sprinting;
     public float ups = 0f;
+
+	public float rollSpeed;
+	public float rollTime;
+	public float rollShrinkDelay;
+	Vector3 rollDirection;
+	public float forwards = 0f;
     /*
     public GameObject eatSoundObj;
     */
@@ -145,14 +154,13 @@ public class PlayerController : MonoBehaviour {
         if (CanJump() && (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.Joystick1Button0)))
         {
             wasInput = true;
-           // anim.ResetTrigger("Jump");
-            anim.SetTrigger("Jump");            
+           // anim.ResetTrigger("Jump");                   
             StartCoroutine(DoJump()); 
         }
-        else if (CanJump() && Input.GetKeyDown(KeyCode.Joystick1Button1))
+		else if (CanJump() && (Input.GetKeyDown(KeyCode.Joystick1Button1) || Input.GetKeyDown(KeyCode.Q)))
         {
             wasInput = true;
-            anim.SetTrigger("Roll");
+			StartCoroutine (DoRoll ());            
         }
     
 
@@ -204,7 +212,9 @@ public class PlayerController : MonoBehaviour {
 
     bool CanJump()
     {
-        return onGround;
+		if(anim.GetCurrentAnimatorStateInfo(0).IsTag("Grounded"))
+			return onGround;
+		return false;
     }
 
     void Yawn()
@@ -258,7 +268,25 @@ public class PlayerController : MonoBehaviour {
 
     IEnumerator DoJump()
     {
-        ups = jumpSpeed;
+		anim.ResetTrigger("Jump"); 
+		anim.SetTrigger("Jump");
+
+		crouching = false;
+		anim.SetBool ("Crouching", crouching);
+		if (speedMod < 1f)
+			speedMod = 1f;
+
+		if (Mathf.Abs(moveForward) + Mathf.Abs(moveSideways) > 0.1f) {
+			if(speedMod > 1f)
+				yield return new WaitForSeconds(jumpDelay_sprinting);
+			else {
+				yield return new WaitForSeconds(jumpDelay_running);
+			}
+		}
+		else
+			yield return new WaitForSeconds(jumpDelay_standing);
+        
+		ups = jumpSpeed;
         var standardHeight = GetComponent<CapsuleCollider>().height;
         GetComponent<CapsuleCollider>().height = 2f;
 
@@ -280,6 +308,35 @@ public class PlayerController : MonoBehaviour {
         ups = 0f;
         anim.ResetTrigger("Jump");
     }
+
+	IEnumerator DoRoll()
+	{
+		anim.ResetTrigger("Roll"); 
+		anim.SetTrigger("Roll");
+
+		crouching = false;
+		anim.SetBool ("Crouching", crouching);
+		if (speedMod < 1f)
+			speedMod = 1f;
+
+		rollDirection = transform.forward;
+		forwards = rollSpeed;
+	
+		var rollEndTime = Time.time + rollTime;
+		yield return new WaitForFixedUpdate();
+
+		yield return new WaitForSeconds (rollShrinkDelay);
+
+		var standardHeight = GetComponent<CapsuleCollider>().height;
+		GetComponent<CapsuleCollider>().height = 2f;
+
+		yield return new WaitForSeconds(rollTime - rollShrinkDelay);
+
+		GetComponent<CapsuleCollider>().height = standardHeight;
+		forwards = 0f;
+		anim.ResetTrigger("Roll");
+	}
+
 
     IEnumerator DoWallClimb()
     {
@@ -321,7 +378,7 @@ public class PlayerController : MonoBehaviour {
         var moveF = flatForward * moveForward;
 		var moveS = flatRight * moveSideways;
 
-        if (moveForward != 0 || moveSideways != 0)
+		if (moveForward != 0 || moveSideways != 0 && forwards == 0)
         {
             transform.rotation = Quaternion.LookRotation(moveF + moveS);
         }
@@ -336,6 +393,14 @@ public class PlayerController : MonoBehaviour {
 
         var targetSpeed = (moveF + moveS) * 0.5f * speed * speedMod * Time.deltaTime;
         targetSpeed += new Vector3(0f, ups, 0f);
+
+		if (forwards != 0f)
+		{
+			// is there some forced forward movement, like from a roll or slide
+			// only do that forward movement
+			targetSpeed = rollDirection * forwards * speedMod * Time.deltaTime;
+			Debug.Log (targetSpeed);
+		}
 
         rb.AddForce(targetSpeed - rb.velocity, ForceMode.VelocityChange);
 
