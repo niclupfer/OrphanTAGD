@@ -15,6 +15,7 @@ public class DumbCityGenerator : MonoBehaviour
     public GameObject sidewalkObj;
     public GameObject buildingObj;
     public GameObject carObj;
+    public GameObject[] randomSpawnNPC;
     public static NodeController[] nodeCtrlArray;
     public NodeController[] readArray;
     public NodeController[,] nodeCtrlMatrix;

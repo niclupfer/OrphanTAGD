@@ -6,8 +6,9 @@ public class NodeController : MonoBehaviour {
 
     public NodeNPC[] nodes;
     public NodeController[] adjNodeCtrls;
-    public GameObject NPC;
+    private GameObject NPC;
     public int currentIndex;
+    private DumbCityGenerator theCity;
 
     public bool activateNodeCtrl = false;
     public bool activeNodeCtrl = false;
@@ -27,7 +28,7 @@ public class NodeController : MonoBehaviour {
     {
         nodes = GetComponentsInChildren<NodeNPC>();
         maxGenNPC = numToGen = nodes.Length;
-    
+        theCity = GameObject.Find("TheCity").GetComponent<DumbCityGenerator>();
     }
 
     // Update is called once per frame
@@ -43,7 +44,7 @@ public class NodeController : MonoBehaviour {
         }
         if (!activeNodeCtrl)
         {
-            NPC[] killNPCs = nodeNPCs.GetComponentsInChildren<NPC>();
+            NPCController[] killNPCs = nodeNPCs.GetComponentsInChildren<NPCController>();
 
             foreach (var item in killNPCs)
             {
@@ -67,13 +68,15 @@ public class NodeController : MonoBehaviour {
             nodeNPCs.transform.parent = transform;
             for (int i = 0; i < numToGen; ++i)
             {
+                NPC = theCity.randomSpawnNPC[Random.Range(0, theCity.randomSpawnNPC.Length)];
                 Vector3 nodePos = new Vector3(nodes[i].transform.position.x, nodes[i].transform.position.y, nodes[i].transform.position.z);
                 var createNPC = Instantiate(NPC, nodePos, nodes[i].transform.rotation);
                 createNPC.gameObject.transform.parent = nodeNPCs.transform;
-                createNPC.GetComponent<NPC>().currentNode = nodes[i].transform;
-                createNPC.GetComponent<NPC>().nodeCtrl = this;
-                createNPC.GetComponent<NPC>().currentNodeIndex = i;
-                createNPC.GetComponent<NPC>().state = global::NPC.State.PATROL;
+                createNPC.GetComponent<NPCController>().currentNode = nodes[i].transform;
+                createNPC.GetComponent<NPCController>().nodeCtrl = this;
+                createNPC.GetComponent<NPCController>().currentNodeIndex = i;
+                createNPC.GetComponent<NPCController>().state = global::NPCController.State.PATROL;
+                createNPC.GetComponent<NPCStats>().NPCName = NPC.name;
             }
             generateMoreNPC = false;
         }

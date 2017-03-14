@@ -1,221 +1,119 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class NPCSight : MonoBehaviour {
+public class NPCSight : MonoBehaviour
+{
+    enum DangerState { white = 8, yellow = 5, orange = 4, red = 3 }
 
-    enum DangerState { white=0, yellow=1, orange=2, red = 4 };
-   
+    SphereCollider sphere;
+    public float heightMultiplier;
+    public float rayOffset;
+    private NPCController npc;
+    private DangerState state = DangerState.red;
+
     [HideInInspector]
-    public NPC npc;
-    public float distanceBetweenLines = 1f;
+    public float sightDistance;
+    public bool intruder = false;
+    public float castWidth = 3f;
+    public float tooCloseDist = 0.025f;
 
-    //PUBLIC LINECAST
-    public int numLines = 5;
-    public float detectionRange = 8f;
-    public int numObs = 0;
-    public int stuckCount = 0;
-    
+    private bool slowCRrunning = false;
 
-    //PRIVATE
-    private Obstacle nearest = new Obstacle();
-    private Obstacle nextNearest = new Obstacle();
-    private bool readyToLook = true;
-    private bool readyToAvoid = true;
-    private SphereCollider sphere;
-    
-    
-
-    class Obstacle
-    {
-        public GameObject gameObj;
-        public string tag;
-        public float distance;
-        public Vector3 position;
-        public Vector3 direction;
-        public int stuckCount;        
-
-        public Obstacle()
-        {
-            tag = "";
-            distance = 0;
-            gameObj = null;
-            position = Vector3.zero;
-            direction = Vector3.zero;
-        }
-        public Obstacle(GameObject g, string t, float d, Vector3 p, Vector3 dir)
-        {
-            tag = t;
-            distance = d;
-            gameObj = g;
-            position = p;
-            direction = dir;
-        }
-        // used to print the obstacle for debugging purposes
-        public string printObstacle()
-        {
-            string printOut = "Obstacle " + gameObj + " detected. Tagged as: " + tag + " at " + position + " relative in the direction of " + direction + ".";
-            return printOut;
-        }
-        // compares gameObjects to see if they are the same
-        public bool isEqual(Obstacle obs)
-        {
-            if (obs.gameObj == gameObj)
-                return true;
-            else
-                return false;
-        }
-    }
-
+    //debug variables
+    public float backCastOffset = 2f;
+    public float timeToLook = .2f;
+    // Use this for initialization
     void Start()
     {
-        sphere = GetComponent<SphereCollider>();        
+        sphere = GetComponent<SphereCollider>();
+        sightDistance = sphere.radius;
+        npc = GetComponentInParent<NPCController>();
     }
 
     void OnTriggerStay(Collider col)
     {
+        if(col.gameObject.layer == 8)
+        {
+            intruder = true;
+        }
+    }
 
-        // create lines of sight
-        if (col.transform != transform.parent && readyToLook && col.gameObject.layer == 8)
-        {            
-            StartCoroutine(notReadyToLook(0f));
-            Vector3 fwd = transform.forward;
-            Vector3 thisPos = transform.position;
-            thisPos.y -= 1f;
-            Vector3 pos = thisPos + detectionRange * fwd;
-            List<Obstacle> obstaclesDetected = new List<Obstacle>();
-            stuckCount = 0;
-            for (int i = -(int)Mathf.Floor(numLines / 2); i <= (int)Mathf.Floor(numLines / 2); ++i)
+    void OnTriggerExit(Collider col)
+    {
+        if(col.gameObject.layer ==8)
+        {
+            intruder = false;
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+    
+
+    void FixedUpdate()
+    {
+        if (npc.state != NPCController.State.IDLE && intruder)
+        {
+            var back = (transform.position + Vector3.up * (heightMultiplier - rayOffset / 2)) - transform.forward * backCastOffset;
+            Debug.DrawRay(back, transform.forward * sightDistance, Color.red);
+
+            RaycastHit hit;
+            if (npc.readyToLook)
             {
-                Vector3 losDir = new Vector3(-fwd.z, thisPos.y, fwd.x).normalized;
-                Vector3 lineOfSight = pos + losDir * distanceBetweenLines * i;
-                lineOfSight.y = thisPos.y;
-                RaycastHit hit;
-                if (Physics.Linecast(thisPos, lineOfSight, out hit, 1 << 8))
+                StartCoroutine(notReadyToLook(timeToLook));
+                var avoidance_force = Vector3.zero;
+                if (Physics.SphereCast(back, castWidth, transform.forward * sightDistance, out hit, sightDistance, 1 << 8))
                 {
-                    Obstacle obs = new Obstacle(hit.transform.gameObject, hit.transform.tag, hit.distance, hit.point, hit.point - transform.position);
-                    if (obstaclesDetected.Count == 0)
-                        obstaclesDetected.Add(obs);
-                    else
+                    if (hit.transform != transform.parent)
                     {
-                        // detects if the obstacle has been added already. if so, update. if not, add to list
-                        for (int k = 0; k < obstaclesDetected.Count; ++k)
+                        npc.obstacleDetected = true;
+                        state = getDangerState(hit.distance - backCastOffset);
+                    //    Debug.Log(transform.parent.name + " " + hit.distance + " " + state + " " + hit.transform.name);
+                    //    Debug.Log(hit.distance);
+                        if (hit.distance > tooCloseDist)
                         {
-                            if (obs.isEqual(obstaclesDetected[k]))
-                            {
-                                obstaclesDetected[k] = obs;
-                                ++stuckCount;
-                            }
-                            else if (k == obstaclesDetected.Count - 1)
-                            {
-                                obstaclesDetected.Add(obs);
-                            }
+                            if (Vector3.Angle(transform.right, hit.point - npc.transform.position) <= 90)
+                                npc.Veer(-((int)DangerState.white - (int)state) * 10);
+                            else
+                                npc.Veer(((int)DangerState.white - (int)state) * 10);
+                        }
+                        else
+                        {
+                            npc.Veer(180);
+                            //npc.lastKnownState = npc.state;
+                            //npc.state = NPCController.State.IDLE;                            
                         }
                     }
                 }
-                Debug.DrawLine(thisPos, lineOfSight, Color.green);
-            }
-            numObs = obstaclesDetected.Count;
-            if (numObs != 0)
-            {
-                nearest = findNearestCollision(obstaclesDetected);
-                Debug.DrawLine(thisPos, nearest.position, Color.red);
+                else
+                    npc.obstacleDetected = false;
 
-                if (numObs > 1)
-                {
-                    npc.obstacleDetected = true;
-                    obstaclesDetected.Remove(nearest);
-                    nextNearest = findNearestCollision(obstaclesDetected);
-                    Debug.DrawLine(thisPos, nextNearest.position, Color.blue);
-                }
-            }
-            else
-            {
-                npc.obstacleDetected = false;
-                nearest = new Obstacle();
-                nextNearest = new Obstacle();
             }
 
         }
-      
     }
 
-    Obstacle findNearestCollision(List<Obstacle> obsDet)
-    {
-        Obstacle obs = obsDet[0];
-        for(int i = 1; i<obsDet.Count; ++i)
-        {
-            if (obsDet[i].distance < obs.distance)
-                obs = obsDet[i];
-        }
-        return obs;
-    }
-
-
-    void Update() {
-        // check to see if more than one obstacle
-        if (npc.state == NPC.State.FREEROAM)
-        {
-            npc.transform.position += transform.forward * Time.deltaTime * npc.walkingSpeed;
-             npc.GetComponent<Animator>().SetFloat("Speed", npc.walkingSpeed);            
-        }
-
-        if (readyToAvoid && numObs > 1)
-        {
-            StartCoroutine(notReadyToAvoid(0.2f));
-            obstacleAvoidance(nearest, nextNearest);
-        }
-        else if (readyToAvoid && numObs == 1)
-        {
-
-            StartCoroutine(notReadyToAvoid(0.2f));
-            obstacleAvoidance(nearest, new Obstacle());
-        }
-    }
- 
-    void obstacleAvoidance(Obstacle near, Obstacle next)
-    {
-        DangerState ds = assessDanger(near, next);
-        if (ds == DangerState.red)
-            StartCoroutine(npc.chillOut(.2f));
-        float nearAngle = Vector3.Angle(transform.right, near.direction);
-        float nextAngle = Vector3.Angle(transform.right, next.direction);
-        // avoiding one object
-        if (next.gameObj == null)
-        {
-            if (nearAngle <= 90) //obstacle is to the right, so veer left
-                npc.veer(-(int)ds * 10);
-            else
-                npc.veer((int)ds * 10); //obstacle is to the left, so veer right
-        } // avoid the second object too
-        else
-        {
-
-        }
-     
-    }
-    
-    // welcome to the danger zone
-    DangerState assessDanger(Obstacle near, Obstacle next)
-    {
-        if (stuckCount > 1)
-            return DangerState.red;
-        if (near.distance < .5)
-            return DangerState.red;
-        return DangerState.yellow;
-    } 
-    
     IEnumerator notReadyToLook(float time)
     {
-        readyToLook = false;
+        npc.readyToLook = false;
         yield return new WaitForSeconds(time);
-        readyToLook = true;
+        npc.readyToLook = true;
     }
-
-    IEnumerator notReadyToAvoid(float time)
+    
+    DangerState getDangerState(float distance)
     {
-        readyToAvoid = false;   
-        yield return new WaitForSeconds(time);
-        readyToAvoid = true;
+        if (distance > (int)DangerState.yellow)
+            return DangerState.white;
+        if (distance > (int)DangerState.orange)
+            return DangerState.yellow;
+        if (distance > (int)DangerState.red)
+            return DangerState.orange;
+        else
+            return DangerState.red;
     }
 }

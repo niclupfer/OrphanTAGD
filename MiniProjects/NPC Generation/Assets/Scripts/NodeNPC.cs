@@ -8,12 +8,12 @@ public class NodeNPC : MonoBehaviour {
     {
         if (col.tag == "NPC")
         {
-            NPC npc = col.GetComponent<NPC>();
+            NPCController npc = col.GetComponent<NPCController>();
             if (this.transform == npc.nextNode)
             {
                 npc.currentNode = this.transform;
                 npc.currentNodeIndex = npc.nextNodeIndex;
-                npc.decisionMaking();
+                npc.DecisionMaking();
                 if (npc.nextNodeIndex == npc.currentNodeIndex)
                 {
                     if (!npc.reverseDir)        //clockwise
