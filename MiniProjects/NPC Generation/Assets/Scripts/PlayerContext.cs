@@ -13,6 +13,9 @@ public class PlayerContext : MonoBehaviour {
     public GameObject convoPos;
     private Vector3 originalPos;
     private Quaternion originalRot;
+    public GameObject TalkBox;
+
+    private NPCController.State lastStateWhenAlreadyIdle;
 
     private bool ready = true;
        
@@ -26,7 +29,6 @@ public class PlayerContext : MonoBehaviour {
         // list all the options here
         if (doingStuff && ready)
         {
-            StartCoroutine(notReadyToContext(1f));
             if (Input.GetMouseButton(0))
                 GetLeftContext(busyNPC);
             else if (Input.GetMouseButton(1))
@@ -34,7 +36,6 @@ public class PlayerContext : MonoBehaviour {
         }
         else if(ready)
         {
-            StartCoroutine(notReadyToContext(1f));
             if (priorityContext != null && Input.GetMouseButton(0))
             {
                 GetLeftContext(priorityContext);
@@ -88,16 +89,17 @@ public class PlayerContext : MonoBehaviour {
 
     void GetLeftContext(GameObject obj)
     {
+        StartCoroutine(notReadyToContext(1f));
         NPCStats npc = obj.GetComponent<NPCStats>();
         npc.GetComponentInChildren<SkinnedMeshRenderer>().material = npc.notOutlined;
         contextUI.SetActive(false);
         switch (npc.NPCName)
         {            
             case "adultMaleNPC":
-                TalkAdult(obj);
+                Talk(obj);
                 break;
             case "maleChildNPC":
-                TalkChild(obj);
+                Talk(obj);
                 break;
             default:
                 break;
@@ -106,16 +108,17 @@ public class PlayerContext : MonoBehaviour {
 
     void GetRightContext(GameObject obj)
     {
+        StartCoroutine(notReadyToContext(1f));
         NPCStats npc = obj.GetComponent<NPCStats>();
         npc.GetComponentInChildren<SkinnedMeshRenderer>().material = npc.notOutlined;
         contextUI.SetActive(false);
         switch (npc.NPCName)
         {
             case "adultMaleNPC":
-                TalkAdult(obj);
+                Talk(obj);
                 break;
             case "maleChildNPC":
-                TalkChild(obj);
+                Talk(obj);
                 break;
             default:
                 break;
@@ -125,13 +128,14 @@ public class PlayerContext : MonoBehaviour {
     IEnumerator notReadyToContext(float duration)
     {
         ready = false;
-        yield return new WaitForSecondsRealtime(duration);
+        yield return new WaitForSeconds(duration);
         ready = true;
     }
 
-    void TalkAdult(GameObject obj)
+    void Talk(GameObject obj)
     {
         NPCController npc = obj.GetComponent<NPCController>();
+        NPCStats stats = obj.GetComponent<NPCStats>();
         busyNPC = obj;
         if (!doingStuff)
         {
@@ -147,7 +151,13 @@ public class PlayerContext : MonoBehaviour {
             GetComponentInParent<PlayerController>().playable = false;
             doingStuff = true;
             npc.NpcLook(transform.position);
-            npc.lastKnownState = npc.state;
+            if (npc.state != NPCController.State.IDLE)
+            {
+                lastStateWhenAlreadyIdle = npc.lastKnownState;
+                npc.lastKnownState = NPCController.State.IDLE;
+            }
+            else
+                npc.lastKnownState = npc.state;
             npc.state = NPCController.State.IDLE;
             transform.parent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             obj.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
@@ -155,16 +165,29 @@ public class PlayerContext : MonoBehaviour {
             originalRot = obj.transform.rotation;
             obj.transform.position = convoPos.transform.position;
             obj.transform.rotation = convoPos.transform.rotation;
+            if (stats.NPCName == "maleChildNPC" && TalkBox.GetComponent<RectTransform>().localPosition.y < 0)
+            {
+                TalkBox.GetComponent<RectTransform>().localPosition = new Vector3(0, 130, 0);
+            }
+            else if (stats.NPCName == "adultMaleNPC" && TalkBox.GetComponent<RectTransform>().localPosition.y > 0)
+            {
+                TalkBox.GetComponent<RectTransform>().localPosition = new Vector3(0, -130, 0);
+            }
+            TalkBox.SetActive(true);
         }
         else
         {
             transform.parent.GetComponent<Rigidbody>().constraints = (RigidbodyConstraints)80;
             obj.GetComponent<Rigidbody>().constraints = (RigidbodyConstraints)80;
-            npc.state = npc.lastKnownState;
+            if (lastStateWhenAlreadyIdle != null)
+                npc.state = lastStateWhenAlreadyIdle;
+            else
+                npc.state = npc.lastKnownState;
             doingStuff= false;
             GetComponentInParent<PlayerController>().playable = true;
             obj.transform.position = originalPos;
             obj.transform.rotation = originalRot;
+            TalkBox.SetActive(false);
 
         }
         transform.parent.GetComponentInChildren<NPCConversation>().ToggleCameras();
@@ -194,6 +217,5 @@ public class PlayerContext : MonoBehaviour {
         
     }
     */
-
-    void TalkChild(GameObject obj) { }
+    
 }
