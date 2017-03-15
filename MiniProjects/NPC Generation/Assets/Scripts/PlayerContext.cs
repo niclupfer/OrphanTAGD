@@ -14,6 +14,7 @@ public class PlayerContext : MonoBehaviour {
     private Vector3 originalPos;
     private Quaternion originalRot;
     public GameObject TalkBox;
+    private DialogManager dialogManager;
 
     private NPCController.State lastStateWhenAlreadyIdle;
 
@@ -22,6 +23,7 @@ public class PlayerContext : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        dialogManager = GameObject.Find("DialogManager").GetComponent<DialogManager>();
     }
 
     void Update()
@@ -44,6 +46,10 @@ public class PlayerContext : MonoBehaviour {
             {
                 GetRightContext(priorityContext);
             }
+        }
+        if (TalkBox.activeSelf)
+        {
+            
         }
     }
     void OnTriggerStay(Collider col)
@@ -98,7 +104,7 @@ public class PlayerContext : MonoBehaviour {
             case "adultMaleNPC":
                 Talk(obj);
                 break;
-            case "maleChildNPC":
+            case "childMaleNPC":
                 Talk(obj);
                 break;
             default:
@@ -117,7 +123,7 @@ public class PlayerContext : MonoBehaviour {
             case "adultMaleNPC":
                 Talk(obj);
                 break;
-            case "maleChildNPC":
+            case "childMaleNPC":
                 Talk(obj);
                 break;
             default:
@@ -165,15 +171,7 @@ public class PlayerContext : MonoBehaviour {
             originalRot = obj.transform.rotation;
             obj.transform.position = convoPos.transform.position;
             obj.transform.rotation = convoPos.transform.rotation;
-            if (stats.NPCName == "maleChildNPC" && TalkBox.GetComponent<RectTransform>().localPosition.y < 0)
-            {
-                TalkBox.GetComponent<RectTransform>().localPosition = new Vector3(0, 130, 0);
-            }
-            else if (stats.NPCName == "adultMaleNPC" && TalkBox.GetComponent<RectTransform>().localPosition.y > 0)
-            {
-                TalkBox.GetComponent<RectTransform>().localPosition = new Vector3(0, -130, 0);
-            }
-            TalkBox.SetActive(true);
+            dialogManager.GetTalkBox(stats.NPCName);            
         }
         else
         {
@@ -187,35 +185,10 @@ public class PlayerContext : MonoBehaviour {
             GetComponentInParent<PlayerController>().playable = true;
             obj.transform.position = originalPos;
             obj.transform.rotation = originalRot;
-            TalkBox.SetActive(false);
+            dialogManager.HideTalkBox();
 
         }
-        transform.parent.GetComponentInChildren<NPCConversation>().ToggleCameras();
+        dialogManager.ToggleCameras();
         
-    }
-    
-
-   /*
-    //Changed to a zelda-style camera
-     void TalkAdult(GameObject obj)
-    {
-        var objTran = obj.transform;
-        originalRot = objTran.rotation;
-        script.transform.position = main.transform.position;
-        script.transform.rotation = main.transform.rotation;        
-        transform.parent.GetComponentInChildren<SkinnedMeshRenderer>().enabled = !transform.parent.GetComponentInChildren<SkinnedMeshRenderer>().enabled;
-        TAGDGame.Pause(main, script, obj, transform.parent.gameObject);        
-        var lookPos = transform.parent.transform.position;
-        lookPos.y = objTran.position.y;
-        var dir = lookPos - objTran.position;
-        dir.y = 0;
-        if (dir != Vector3.zero)
-        {
-            var turn = Quaternion.LookRotation(dir,objTran.up);
-            objTran.rotation = Quaternion.Slerp(objTran.rotation, turn, 1);
-        }
-        
-    }
-    */
-    
+    } 
 }

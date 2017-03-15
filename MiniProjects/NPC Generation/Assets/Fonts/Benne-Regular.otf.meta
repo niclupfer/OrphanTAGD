@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 7634c6aeca14f3a459304d85674e94eb
+timeCreated: 1489570036
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Benne
+  fontNames:
+  - Benne
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
