@@ -171,7 +171,7 @@ public class PlayerContext : MonoBehaviour {
             originalRot = obj.transform.rotation;
             obj.transform.position = convoPos.transform.position;
             obj.transform.rotation = convoPos.transform.rotation;
-            dialogManager.GetTalkBox(stats.NPCName);            
+            dialogManager.ShowTalkBox(obj);            
         }
         else
         {

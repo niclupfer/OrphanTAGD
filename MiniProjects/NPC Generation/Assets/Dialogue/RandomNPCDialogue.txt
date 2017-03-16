@@ -1,0 +1,7 @@
+Male Adult	Neutral	Hello there, little one.
+Any NPC	Neutral	Hello.
+Male Child	Neutral	Hey _name_! Got any food?
+Male Child	Excited	Woah, nice _equippedItem_!
+Male Adult	Aggressive	You smell like my gym bag. Go take a bath!
+Male Adult	Sympathetic	Where are your parents?
+Male Child	Aggressive	_neighborhood_ belongs to the _orphanGang_!

@@ -6,7 +6,10 @@ using System.IO;
 
 public class DialogManager : MonoBehaviour {
 
-    // add constant values EXACTLY from csv to ensure correct type
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // CONSTANTS YO - CHANGE THESE TO ADD OR REMOVE THE TYPES OR PERSONALITIES
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~        
+    enum NPC_NAMES {adultMaleNPC, childMaleNPC};    // name of NPC prefab (MUST BE EXACT)
     readonly string[] NPC_TYPES = {"Any NPC", "Male Adult", "Male Child" };
     readonly string[] NPC_PERSONALITIES = {"Neutral", "Sympathetic", "Aggressive", "Excited", "Depressed", "Happy"};
     readonly string[] NPC_VARIABLES = {"_name_", "_equippedItem_", "_neighborhood_", "_timeOfDay_", "_hat_", "_orphanGang_"};
@@ -25,9 +28,7 @@ public class DialogManager : MonoBehaviour {
     public string NPCType;    
     public string NPCPersonality;
 
-    // different NPC types go here
-    public string[][] adultMale;
-    public string[][] childMale;
+    public TextAsset randomNPCText;    
 
     public Camera main;
     public Camera conversationCam;
@@ -43,56 +44,53 @@ public class DialogManager : MonoBehaviour {
 
     void Start()
     {        
-        GetCSVData();
+        ParseData();
         if (phrases == null)
             Debug.Log("File Not Found");
         else
-            Debug.Log(phrases[0].print());
+            Debug.Log(phrases[0].print() + phrases[1].print() + phrases[6].var1 + phrases[6].var2);
         NPCType = phrases[0].type;
         NPCPersonality = phrases[0].personality;
         NPCPhrase = phrases[0].phrase;
     }
 
-   
-   void GetCSVData()
-    {
-        if (System.IO.File.Exists(Application.dataPath + "/RandomNPCDialogue.csv")) {
-            var fs = File.OpenRead(Application.dataPath + "/RandomNPCDialogue.csv");
-            var reader = new StreamReader(fs);
-            while (!reader.EndOfStream)
-            {
-                var dialogue = new Dialogue();
-                var line = reader.ReadLine();
-                var values = line.Split(';');
-                Debug.Log(values[1]);
-                if (System.Array.IndexOf(NPC_TYPES, values[0]) != -1)
-                {
-                    dialogue.type = values[0];
-                }
-                else Debug.Log("Incorrect Type detected");
-                if (System.Array.IndexOf(NPC_PERSONALITIES, values[1]) != -1)
-                {
-                    dialogue.personality = values[1];
-                }
-                else Debug.Log("Incorrect Personality detected");
 
-                // checks to see if variables are used in phrase
-           /*     for(int i = 0; i < NPC_VARIABLES.Length; ++i)
-                {
-                    if (values[2].Contains(NPC_VARIABLES[i]))
-                    {
-                        if (dialogue.var1 == "")
-                            dialogue.var1 = NPC_VARIABLES[i];
-                        else
-                            dialogue.var2 = NPC_VARIABLES[i];
-                    }
-                }/*/
-                dialogue.phrase = values[2];
-                phrases.Add(dialogue);
+    void ParseData()
+    {
+
+        var text = randomNPCText.text;
+        var splitText = text.Split('\n');
+        for (int i = 0; i < splitText.Length; ++i)
+        {
+            var splitByTab = splitText[i].Split('\t');
+            var dialogue = new Dialogue();
+            if (System.Array.IndexOf(NPC_TYPES, splitByTab[0]) != -1)
+            {
+                dialogue.type = splitByTab[0];
             }
+            else Debug.Log("Incorrect Type detected");
+            if (System.Array.IndexOf(NPC_PERSONALITIES, splitByTab[1]) != -1)
+            {
+                dialogue.personality = splitByTab[1];
+            }
+            else Debug.Log("Incorrect Personality detected");
+
+            // checks to see if variables are used in phrase. only up to variables allowed!
+            for (int j = 0; j < NPC_VARIABLES.Length; ++j)
+            {
+                if (splitByTab[2].Contains(NPC_VARIABLES[j]))
+                {
+                    Debug.Log("Contains variable" + NPC_VARIABLES[j]);
+                    if (dialogue.var1 == null)
+                        dialogue.var1 = NPC_VARIABLES[j];
+                    else
+                        dialogue.var2 = NPC_VARIABLES[j];
+                }
+            }
+            dialogue.phrase = splitByTab[2];
+            phrases.Add(dialogue);
         }
-        
-    }    
+    }
 
     void Update()
     {
@@ -115,8 +113,11 @@ public class DialogManager : MonoBehaviour {
         changeImage = true;
     }
 
-    public void GetTalkBox(string name)
-    {
+    public void ShowTalkBox(GameObject obj)
+    {        
+        var stats = obj.GetComponent<NPCStats>();
+        var name = stats.NPCName;
+        GetSpeech(stats);
         if (name == "childMaleNPC")
         {
             TalkBox.GetComponent<RectTransform>().anchorMax = new Vector2(0.85f, 0.9f);
@@ -135,6 +136,39 @@ public class DialogManager : MonoBehaviour {
         TalkBox.SetActive(false);
     }
 
+    public void GetSpeech(NPCStats stats)
+    {
+        // need to implement Personality matrix still, for now random from array          
+        var name = stats.NPCName;
+        var personality = NPC_PERSONALITIES[Random.Range(0, NPC_PERSONALITIES.Length)];
+        switch (name)
+        {
+            case "childMaleNPC":
+                name = "Male Child";
+                break;
+            case "adultMaleNPC":
+                name = "Male Adult";
+                break;
+        }
+
+        // Find matching dialogue for personality / type
+        List<Dialogue> matched = new List<Dialogue>();
+        for(int i = 0; i < phrases.Count; ++i)
+        {
+            if ((phrases[i].type == "Any NPC" || phrases[i].type == name) && (phrases[i].personality == "Neutral" || phrases[i].personality == personality))
+                matched.Add(phrases[i]);
+        }
+        var chosenDialogue = matched[Random.Range(0, matched.Count)];
+    // IMPLEMENT VARIABLE REPLACEMENT HERE
+    ReplaceVariable();
+        TalkBox.GetComponentInChildren<Text>().text = chosenDialogue.phrase;
+
+    }
+
+    public void ReplaceVariable()
+    {
+
+    }
     public void ToggleCameras()
     {
         main.enabled = !main.enabled;
