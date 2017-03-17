@@ -34,6 +34,9 @@ public class PlayerController : MonoBehaviour {
     public bool onGround = false;
 
     public GameObject dustObj;
+	public GameObject dust_LandObj;
+	public GameObject dust_RollObj;
+
     public float footstepMod;
     float lastFootstepTime;
 
@@ -427,7 +430,9 @@ public class PlayerController : MonoBehaviour {
             if (onGround == false)
             {
                 //Debug.Log("Landed!");
-                // landed               
+                // landed   
+				var dust = Instantiate (dust_LandObj);
+				dust.transform.position = transform.position;
             }
             onGround = true;
         }
@@ -448,7 +453,7 @@ public class PlayerController : MonoBehaviour {
         var moveF = flatForward * moveForward;
 		var moveS = flatRight * moveSideways;
 
-		if (moveForward != 0 || moveSideways != 0 && forwards == 0)
+		if ((moveForward != 0 || moveSideways != 0) && forwards == 0)
         {
             transform.rotation = Quaternion.LookRotation(moveF + moveS);
         }
@@ -470,7 +475,7 @@ public class PlayerController : MonoBehaviour {
 			// is there some forced forward movement, like from a roll or slide
 			// only do that forward movement
 			targetSpeed = rollDirection * forwards * speedMod * Time.deltaTime;
-			Debug.Log (targetSpeed);
+			//Debug.Log (targetSpeed);
 		}
 
         rb.AddForce(targetSpeed - rb.velocity, ForceMode.VelocityChange);
@@ -481,9 +486,13 @@ public class PlayerController : MonoBehaviour {
 			if (footstepMod / actualSpeed < Time.time - lastFootstepTime)
 				Footstep ();
 		}
+		if (forwards != 0f) {
+			// draw the roll/slide dust animations
+			RollDust();
+		}
 
 		var delta = (transform.position - lastPosition).magnitude;
-		Debug.Log ("Delta: " + delta);
+		//Debug.Log ("Delta: " + delta);
 		if (delta < 0.05f && sprinting && lastDelta > 0.15f) {
 			// must have run into something
 			anim.SetTrigger("Ran Into Something");
@@ -512,12 +521,24 @@ public class PlayerController : MonoBehaviour {
 		am.PlaySFX(footstep, volume, true);
     }
 
+	float lastRollDust = 0f;
+	float rollDustInterval = 0.08f;
+
+	void RollDust()
+	{
+		if (Time.time > lastRollDust + rollDustInterval) {
+			var dust = Instantiate (dust_RollObj);
+			dust.transform.position = transform.position + (transform.up * 0.6f);
+			lastRollDust = Time.time;
+		}
+	}
+
 	bool ObjectInFront_Vaultable()
 	{
 		RaycastHit hit;
 		if (Physics.Raycast (transform.position + (transform.up * 1f), transform.forward, out hit, 3f * speedMod)) {
-			Debug.Log ("Front Hit " + hit.distance);
-			if(hit.game hit.distance > 2f)
+			//Debug.Log ("Front Hit " + hit.distance);
+			if(hit.collider.gameObject.tag == "Vaultable" && hit.distance > 2f)
 				return true;
 		}
 
