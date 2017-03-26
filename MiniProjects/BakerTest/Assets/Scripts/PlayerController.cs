@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
         rb = GetComponent<Rigidbody>();
         count = 0;
-        countText.text = "Count: " + count.ToString();
+        //countText.text = "Count: " + count.ToString();
 	}
 	
 	// Update is called once per frame
@@ -33,6 +33,6 @@ public class PlayerController : MonoBehaviour {
             other.gameObject.SetActive(false);
         }
         count++;
-        countText.text = "Count: " + count.ToString();
+        //countText.text = "Count: " + count.ToString();
     }
 }

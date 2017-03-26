@@ -1,0 +1,315 @@
+fileFormatVersion: 2
+guid: 9da2aed19102b8f40bc988eb00a76c48
+timeCreated: 1487492019
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: adult_chefHat
+    100002: adult_chefHat1
+    100004: adult_geo
+    100006: adult_head
+    100008: adult_head 1
+    100010: adult_MASTER
+    100012: adult_neck
+    100014: adult_shoulders
+    100016: adult_spine_01
+    100018: adult_spine_02
+    100020: adult_spine_03
+    100022: //RootNode
+    100024: ik_l_ankle
+    100026: ik_l_foot
+    100028: ik_l_toe
+    100030: ik_r_ankle
+    100032: ik_r_foot
+    100034: ik_r_toe
+    100036: joint17
+    100038: joint18
+    100040: joint19
+    100042: joint20
+    100044: joint21
+    100046: joint21 1
+    100048: joint22
+    100050: joint22 1
+    100052: joint23
+    100054: joint23 1
+    100056: joint24
+    100058: joint24 1
+    100060: joint25
+    100062: joint25 1
+    100064: joint26
+    100066: joint26 1
+    100068: joint27
+    100070: joint27 1
+    100072: joint28
+    100074: joint28 1
+    100076: joint29
+    100078: joint29 1
+    100080: joint30
+    100082: joint30 1
+    100084: joint31
+    100086: joint31 1
+    100088: joint32
+    100090: joint32 1
+    100092: joint6
+    100094: l_alm
+    100096: l_ankle
+    100098: l_arm2
+    100100: l_arm_forearm
+    100102: l_arm_wrist
+    100104: l_folefingel1
+    100106: l_foot
+    100108: l_foot 1
+    100110: l_forefinger1
+    100112: l_forefinger_joint
+    100114: l_forefinger_knuck
+    100116: l_heel
+    100118: l_leg
+    100120: l_lingfingel1
+    100122: l_middlefinger_joint
+    100124: l_middlefinger_knuck
+    100126: l_midfingel1
+    100128: l_midfinger1
+    100130: l_pinky1
+    100132: l_pinky1 1
+    100134: l_pinky_joint
+    100136: l_pinky_knuck
+    100138: l_ringfinger1
+    100140: l_ringfinger_joint
+    100142: l_ringfinger_knuck
+    100144: l_shin
+    100146: l_thumb1
+    100148: l_thumb1 1
+    100150: l_thumb_joint
+    100152: l_thumb_knuck
+    100154: l_toe
+    100156: l_toe 1
+    100158: main_hips
+    100160: nurbsCircle2
+    100162: nurbsCircle3
+    100164: nurbsCircle4
+    100166: pCube1
+    100168: polySurface1
+    100170: polySurface2
+    100172: polySurface2 1
+    100174: polySurface3
+    100176: polySurface4
+    100178: r_ankle
+    100180: r_arm
+    100182: r_arm1
+    100184: r_arm_forearm
+    100186: r_arm_wrist
+    100188: r_foot
+    100190: r_foot 1
+    100192: r_forefinger_joint
+    100194: r_forefinger_knuck
+    100196: r_heel
+    100198: r_leg
+    100200: r_middlefinger_joint
+    100202: r_middlefinger_knuck
+    100204: r_pinky_joint
+    100206: r_pinky_knuck
+    100208: r_ringfinger_joint
+    100210: r_ringfinger_knuck
+    100212: r_shin
+    100214: r_thumb_joint
+    100216: r_thumb_knuck
+    100218: r_toe
+    100220: r_toe 1
+    100222: transform1
+    100224: transform2
+    100226: transform3
+    100228: transform4
+    100230: transform5
+    100232: transform6
+    400000: adult_chefHat
+    400002: adult_chefHat1
+    400004: adult_geo
+    400006: adult_head
+    400008: adult_head 1
+    400010: adult_MASTER
+    400012: adult_neck
+    400014: adult_shoulders
+    400016: adult_spine_01
+    400018: adult_spine_02
+    400020: adult_spine_03
+    400022: //RootNode
+    400024: ik_l_ankle
+    400026: ik_l_foot
+    400028: ik_l_toe
+    400030: ik_r_ankle
+    400032: ik_r_foot
+    400034: ik_r_toe
+    400036: joint17
+    400038: joint18
+    400040: joint19
+    400042: joint20
+    400044: joint21
+    400046: joint21 1
+    400048: joint22
+    400050: joint22 1
+    400052: joint23
+    400054: joint23 1
+    400056: joint24
+    400058: joint24 1
+    400060: joint25
+    400062: joint25 1
+    400064: joint26
+    400066: joint26 1
+    400068: joint27
+    400070: joint27 1
+    400072: joint28
+    400074: joint28 1
+    400076: joint29
+    400078: joint29 1
+    400080: joint30
+    400082: joint30 1
+    400084: joint31
+    400086: joint31 1
+    400088: joint32
+    400090: joint32 1
+    400092: joint6
+    400094: l_alm
+    400096: l_ankle
+    400098: l_arm2
+    400100: l_arm_forearm
+    400102: l_arm_wrist
+    400104: l_folefingel1
+    400106: l_foot
+    400108: l_foot 1
+    400110: l_forefinger1
+    400112: l_forefinger_joint
+    400114: l_forefinger_knuck
+    400116: l_heel
+    400118: l_leg
+    400120: l_lingfingel1
+    400122: l_middlefinger_joint
+    400124: l_middlefinger_knuck
+    400126: l_midfingel1
+    400128: l_midfinger1
+    400130: l_pinky1
+    400132: l_pinky1 1
+    400134: l_pinky_joint
+    400136: l_pinky_knuck
+    400138: l_ringfinger1
+    400140: l_ringfinger_joint
+    400142: l_ringfinger_knuck
+    400144: l_shin
+    400146: l_thumb1
+    400148: l_thumb1 1
+    400150: l_thumb_joint
+    400152: l_thumb_knuck
+    400154: l_toe
+    400156: l_toe 1
+    400158: main_hips
+    400160: nurbsCircle2
+    400162: nurbsCircle3
+    400164: nurbsCircle4
+    400166: pCube1
+    400168: polySurface1
+    400170: polySurface2
+    400172: polySurface2 1
+    400174: polySurface3
+    400176: polySurface4
+    400178: r_ankle
+    400180: r_arm
+    400182: r_arm1
+    400184: r_arm_forearm
+    400186: r_arm_wrist
+    400188: r_foot
+    400190: r_foot 1
+    400192: r_forefinger_joint
+    400194: r_forefinger_knuck
+    400196: r_heel
+    400198: r_leg
+    400200: r_middlefinger_joint
+    400202: r_middlefinger_knuck
+    400204: r_pinky_joint
+    400206: r_pinky_knuck
+    400208: r_ringfinger_joint
+    400210: r_ringfinger_knuck
+    400212: r_shin
+    400214: r_thumb_joint
+    400216: r_thumb_knuck
+    400218: r_toe
+    400220: r_toe 1
+    400222: transform1
+    400224: transform2
+    400226: transform3
+    400228: transform4
+    400230: transform5
+    400232: transform6
+    2300000: polySurface1
+    2300002: polySurface2 1
+    3300000: polySurface1
+    3300002: polySurface2 1
+    4300000: polySurface2
+    4300002: polySurface1
+    4300004: polySurface4
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: polySurface4
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 1
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

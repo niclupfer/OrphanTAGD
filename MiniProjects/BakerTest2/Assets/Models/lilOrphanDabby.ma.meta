@@ -1,0 +1,158 @@
+fileFormatVersion: 2
+guid: 86ab0dc4356cee94687f271eb323366b
+timeCreated: 1487444433
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: bottom
+    100002: CHEST_CTRL
+    100004: Collar
+    100006: HEAD
+    100008: HEAD_CTRL
+    100010: HIP
+    100012: HIP_CTRL
+    100014: imagePlane1
+    100016: L_ANK
+    100018: L_ARM_CTRL
+    100020: L_ARM_IK
+    100022: L_END
+    100024: L_LEG__IK
+    100026: L_LEG_CTRL
+    100028: L_MID_ALM
+    100030: L_MID_LEG
+    100032: L_TOE
+    100034: L_UPL_ALM
+    100036: L_UPR_LEG
+    100038: L_WLIST
+    100040: L_WLIST_END
+    100042: //RootNode
+    100044: MAIN_CTRL
+    100046: NECK
+    100048: polySurface3
+    100050: R_ANK1
+    100052: R_ARM_CTRL
+    100054: R_ARM_IK
+    100056: R_END1
+    100058: R_LEG_CTRL
+    100060: R_LEG_IK
+    100062: R_MID_ARM
+    100064: R_MID_LEG1
+    100066: R_TOE1
+    100068: R_UPR_ARM
+    100070: R_UPR_LEG2
+    100072: R_WRIST
+    100074: R_WRIST_END
+    100076: SPIKE_IK_CURVE
+    100078: SPINE_IK
+    100080: SPINE_ONE
+    400000: bottom
+    400002: CHEST_CTRL
+    400004: Collar
+    400006: HEAD
+    400008: HEAD_CTRL
+    400010: HIP
+    400012: HIP_CTRL
+    400014: imagePlane1
+    400016: L_ANK
+    400018: L_ARM_CTRL
+    400020: L_ARM_IK
+    400022: L_END
+    400024: L_LEG__IK
+    400026: L_LEG_CTRL
+    400028: L_MID_ALM
+    400030: L_MID_LEG
+    400032: L_TOE
+    400034: L_UPL_ALM
+    400036: L_UPR_LEG
+    400038: L_WLIST
+    400040: L_WLIST_END
+    400042: //RootNode
+    400044: MAIN_CTRL
+    400046: NECK
+    400048: polySurface3
+    400050: R_ANK1
+    400052: R_ARM_CTRL
+    400054: R_ARM_IK
+    400056: R_END1
+    400058: R_LEG_CTRL
+    400060: R_LEG_IK
+    400062: R_MID_ARM
+    400064: R_MID_LEG1
+    400066: R_TOE1
+    400068: R_UPR_ARM
+    400070: R_UPR_LEG2
+    400072: R_WRIST
+    400074: R_WRIST_END
+    400076: SPIKE_IK_CURVE
+    400078: SPINE_IK
+    400080: SPINE_ONE
+    4300000: polySurface3
+    7400000: Take 001
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: polySurface3
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 1
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
