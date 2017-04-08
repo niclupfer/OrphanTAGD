@@ -20,7 +20,6 @@ public class ItemRespawn : MonoBehaviour {
 	void Update () {
 		if (table.childCount == 0) 
 		{
-			Debug.Log (timer + " " + table.childCount);
 			timer += Time.deltaTime;
 			if (timer >= spawnTime) {
 				Vector3 position = table.position;
@@ -28,7 +27,6 @@ public class ItemRespawn : MonoBehaviour {
 				var rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
 				var newItem = Instantiate (item, position, rotation);
 				newItem.transform.parent = transform;
-				Debug.Log (table.childCount);
 				timer = 0;
 			}
 		}
