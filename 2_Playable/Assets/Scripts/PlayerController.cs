@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour {
     float lastInputTime;
     public float yawnTime = 20f;
     bool yawned = false;
-    /*
+    
     public bool nearTable = false;
     public bool loafInHands = false;
 
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour {
     GameObject foodInHands;
     
     public bool dead = false;
-    */
+    
     public bool playable = false;
     public bool onGround = false;
 
@@ -69,6 +69,7 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip hup;
 	public AudioClip roll;
     public AudioManager am;
+    public GameObject eatSoundObj;
 
     public Transform rightHand;
 
@@ -169,6 +170,10 @@ public class PlayerController : MonoBehaviour {
         {
             Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, 80, Time.deltaTime);
         }
+        else if (crouching)
+        {
+            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, 50, Time.deltaTime);
+        }
         else
         {
             Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, 60, Time.deltaTime);
@@ -205,7 +210,7 @@ public class PlayerController : MonoBehaviour {
 			StartCoroutine (DoRoll ());            
         }
     
-        /*
+        
         if(loafInHands == true)
         {
             ShowEatText();
@@ -226,7 +231,7 @@ public class PlayerController : MonoBehaviour {
         {
             HideAllText();
         }
-        */
+        
         if (wasInput)
         {
             lastInputTime = Time.time;
@@ -266,7 +271,7 @@ public class PlayerController : MonoBehaviour {
         anim.SetTrigger("Sit");
     }
 
-    /*
+    
     void StealLoaf(GameObject tableObj)
     {        
         loafInHands = true;
@@ -301,7 +306,7 @@ public class PlayerController : MonoBehaviour {
         Destroy(foodInHands);
         foodInHands = null;
     }
-    */
+    
 
     IEnumerator DoJump()
     {
@@ -322,10 +327,12 @@ public class PlayerController : MonoBehaviour {
 			// notify player of coolness somehow
 		}
 
+        /*
 		if (sprinting) {
 			if (Random.Range (0, 10) > 5)
 				anim.SetTrigger ("Cool");
 		}
+        */
 
 		crouching = false;
 		anim.SetBool ("Crouching", crouching);
@@ -432,7 +439,7 @@ public class PlayerController : MonoBehaviour {
                 //Debug.Log("Landed!");
                 // landed   
 				var dust = Instantiate (dust_LandObj);
-				dust.transform.position = transform.position;
+                dust.transform.position = transform.position + (transform.up * 1.0f);
             }
             onGround = true;
         }
@@ -441,17 +448,16 @@ public class PlayerController : MonoBehaviour {
 
         //anim.SetBool("Grounded", onGround);
 
-        rb.angularVelocity = Vector3.zero;
+        //rb.angularVelocity = Vector3.zero;
 
         //var flatForward = new Vector3(transform.forward.x, 0f, transform.forward.z);
         //var flatRight = new Vector3(transform.right.x, 0f, transform.right.z);
-
         
         var flatForward = new Vector3(Camera.main.transform.forward.x, 0f, Camera.main.transform.forward.z);
         var flatRight = new Vector3(Camera.main.transform.right.x, 0f, Camera.main.transform.right.z);
 
-        var moveF = flatForward * moveForward;
-		var moveS = flatRight * moveSideways;
+        var moveF = flatForward.normalized * moveForward;
+		var moveS = flatRight.normalized * moveSideways;
 
 		if ((moveForward != 0 || moveSideways != 0) && forwards == 0)
         {
@@ -478,7 +484,8 @@ public class PlayerController : MonoBehaviour {
 			//Debug.Log (targetSpeed);
 		}
 
-        rb.AddForce(targetSpeed - rb.velocity, ForceMode.VelocityChange);
+        if(sitting == false)
+            rb.AddForce(targetSpeed - rb.velocity, ForceMode.VelocityChange);
 
  		// check for footstep
 		if (actualSpeed > 0f && onGround && forwards == 0f) {
@@ -491,14 +498,16 @@ public class PlayerController : MonoBehaviour {
 			RollDust();
 		}
 
+        /*
 		var delta = (transform.position - lastPosition).magnitude;
 		//Debug.Log ("Delta: " + delta);
 		if (delta < 0.05f && sprinting && lastDelta > 0.15f) {
 			// must have run into something
 			anim.SetTrigger("Ran Into Something");
 		}
+        */
 
-		lastDelta = delta;
+		//lastDelta = delta;
 		lastPosition = transform.position;
     }
 
@@ -510,8 +519,8 @@ public class PlayerController : MonoBehaviour {
 		if (!crouching)
 		{
 			var dust = Instantiate (dustObj);
-			dust.transform.position = transform.position;
-		}
+			dust.transform.position = transform.position + (transform.up * 0.4f) + (Random.insideUnitSphere * 0.3f);
+        }
         
 		// play footstep sound
 		var volume = 1f;
@@ -522,13 +531,13 @@ public class PlayerController : MonoBehaviour {
     }
 
 	float lastRollDust = 0f;
-	float rollDustInterval = 0.08f;
+	float rollDustInterval = 0.2f;
 
 	void RollDust()
 	{
 		if (Time.time > lastRollDust + rollDustInterval) {
 			var dust = Instantiate (dust_RollObj);
-			dust.transform.position = transform.position + (transform.up * 0.6f);
+			dust.transform.position = transform.position + (transform.up * 1.0f);
 			lastRollDust = Time.time;
 		}
 	}
@@ -545,5 +554,75 @@ public class PlayerController : MonoBehaviour {
 		
 		return false;
 	}
-    
+
+    public void DieOfStarvation()
+    {
+        if (!dead)
+        {
+            dead = true;
+            HideAllText();
+            loafInHands = false;
+            if (foodInHands != null)
+                Destroy(foodInHands);
+
+            // game over blargh!
+            //GameObject.Find("Fader").GetComponent<DarthFader>().FadeIn(GAME_STATE.over);
+            GameObject.Find("GameMaster").GetComponent<GameMaster>().StartState(GAME_STATE.over);
+        }
+    }
+
+    void HideAllText()
+    {
+        GameObject.Find("StealText").GetComponent<Text>().color = new Color(0f, 0f, 0f, 0f);
+        GameObject.Find("EatText").GetComponent<Text>().color = new Color(0f, 0f, 0f, 0f);
+    }
+
+    void ShowEatText()
+    {
+        HideAllText();
+        GameObject.Find("EatText").GetComponent<Text>().color = new Color(0f, 0f, 0f, 1f);
+    }
+
+    void ShowStealText()
+    {
+        HideAllText();
+        GameObject.Find("StealText").GetComponent<Text>().color = new Color(0f, 0f, 0f, 1f);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "ShopTable")
+        {
+            if (other.GetComponent<ShopTable>().HasFood())
+            {
+                closestTable = other.gameObject;
+                nearTable = true;
+            }
+            else
+                nearTable = false;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "ShopTable")
+        {
+            nearTable = false;
+        }
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.collider.tag == "ShopKeeper")
+        {
+            /*
+            if (other.collider.GetComponent<BakerAI>().chasing)
+            {
+                // you got caught
+                DieOfStarvation();
+            }
+            */
+        }
+    }
+
 }
