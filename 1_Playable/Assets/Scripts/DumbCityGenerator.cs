@@ -23,7 +23,14 @@ public class DumbCityGenerator : MonoBehaviour
     public GameObject buildingObj8;
     public GameObject buildingObj9;
 
-    public GameObject carObj;
+   // public GameObject carObj;
+    
+    // NPC Variables
+    public GameObject[] randomSpawnNPC;
+    public static NodeController[] nodeCtrlArray;
+    public NodeController[] readArray;
+    public NodeController[,] nodeCtrlMatrix;
+
     public GameObject trashcanObj;
     public GameObject crateObj;
 
@@ -45,7 +52,7 @@ public class DumbCityGenerator : MonoBehaviour
     
     List<Street> streets;
 
-    List<GameObject> cars;
+    //List<GameObject> cars;
 
     //b
     private float wallLengthStart;
@@ -59,7 +66,7 @@ public class DumbCityGenerator : MonoBehaviour
     public void GenerateSquareCity()
     {
         GenerateBlockGrid(blocksWide);
-        GenerateCars(40);
+   //     GenerateCars(40);
         wallLengthStart = blocksWide * blockSize;
         wallWidthStart = blocksWide * blockSize;
         wallPadSquare = wallPadding * wallPadding;
@@ -68,11 +75,21 @@ public class DumbCityGenerator : MonoBehaviour
         outsideStreet.transform.parent = transform;
         outsideStreet.transform.localScale = new Vector3(asphaltObj.transform.localScale.x*blocksWide+3.5f, 1f, asphaltObj.transform.localScale.x*blocksWide+3.5f);
         outsideStreet.name = "outsideStreet";
-        // var outsideSW = Instantiate(sidewalkObj);
-        // outsideSW.transform.localScale = new Vector3(sidewalkObj.transform.localScale.x * blocksWide * blockSize, 0.4f, 3.5f);
-        // outsideSW.name = "outsideSW";
-
+        
         GeneratePerimeter();
+
+        // count nodes and add to array
+        nodeCtrlArray = GetComponentsInChildren<NodeController>();
+        nodeCtrlMatrix = new NodeController[blocksWide, blocksWide];
+        for (int i = 0; i < blocksWide; ++i)
+        {
+            int k = i + blocksWide * blocksWide - blocksWide;
+            for (int j = 0; j < blocksWide; ++j)
+            {
+                nodeCtrlMatrix[i, j] = nodeCtrlArray[k];
+                k -= blocksWide;
+            }
+        }
     }
 
     public void ClearCity()
@@ -457,7 +474,7 @@ public class DumbCityGenerator : MonoBehaviour
         }
     }
 
-    void GenerateCars(int numCars)
+   /* void GenerateCars(int numCars)
     {
         cars = new List<GameObject>();
 
@@ -474,7 +491,7 @@ public class DumbCityGenerator : MonoBehaviour
             streets[i].start.z);
             cars.Add(car);
         }
-    }
+    } */
 
     public Street GetStreetWithStart(Vector3 startPos)
     {
