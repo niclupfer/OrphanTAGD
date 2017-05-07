@@ -1,0 +1,814 @@
+fileFormatVersion: 2
+guid: 6bfca996b7394b440a014dc2a2e9c137
+timeCreated: 1479706052
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: Bicep_L
+    100004: Bicep_R
+    100006: Bone_002
+    100008: Calf_L
+    100010: Calf_R
+    100012: Chest
+    100014: //RootNode
+    100016: Cube
+    100018: Forearm_L
+    100020: Forearm_R
+    100022: Head
+    100024: Stomach
+    100026: Thigh_L
+    100028: Thigh_R
+    400000: Armature
+    400002: Bicep_L
+    400004: Bicep_R
+    400006: Bone_002
+    400008: Calf_L
+    400010: Calf_R
+    400012: Chest
+    400014: //RootNode
+    400016: Cube
+    400018: Forearm_L
+    400020: Forearm_R
+    400022: Head
+    400024: Stomach
+    400026: Thigh_L
+    400028: Thigh_R
+    4300000: Cube
+    7400000: Default Take
+    7400002: Vault
+    7400004: Standing
+    7400006: Walking
+    7400008: Running
+    7400010: Sprinting
+    7400012: Hiding
+    7400014: Sneaking
+    7400016: Rolling
+    7400018: JumpBack
+    7400020: Slide
+    7400022: Jumping
+    7400024: JumpingRun
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: Cube
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Standing
+      takeName: Standing
+      firstFrame: -1
+      lastFrame: 24
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Walking
+      takeName: Walking
+      firstFrame: -1
+      lastFrame: 79
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Running
+      takeName: Running
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Sprinting
+      takeName: Sprinting
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Hiding
+      takeName: Hiding
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Sneaking
+      takeName: Sneaking
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Rolling
+      takeName: Rolling
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: JumpBack
+      takeName: JumpBack
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Slide
+      takeName: Slide
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Vault
+      takeName: Vault
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Jumping
+      takeName: Jumping
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: JumpingRun
+      takeName: JumpingRun
+      firstFrame: -1
+      lastFrame: 0
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Stomach
+        weight: 1
+      - path: Armature/Stomach/Chest
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_L/Forearm_L
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bicep_R/Forearm_R
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002
+        weight: 1
+      - path: Armature/Stomach/Chest/Bone_002/Head
+        weight: 1
+      - path: Armature/Stomach/Thigh_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_L/Calf_L
+        weight: 1
+      - path: Armature/Stomach/Thigh_R
+        weight: 1
+      - path: Armature/Stomach/Thigh_R/Calf_R
+        weight: 1
+      - path: Cube
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.5
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 37
+    normalImportMode: 1
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

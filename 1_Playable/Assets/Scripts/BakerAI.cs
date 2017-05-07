@@ -53,7 +53,7 @@ public class BakerAI : MonoBehaviour {
             chasing = true;
             lastPosition = transform.position;
             atShop = false;
-            Debug.Log("Im gonna get you kid!");
+        //    Debug.Log("Im gonna get you kid!");
             lastTimeSeen = Time.time;
         }
     }
@@ -73,7 +73,7 @@ public class BakerAI : MonoBehaviour {
             //Casts ray from Baker to Player
             RaycastHit hit;//object hit by ray
             Physics.Raycast(bakerHead, movement, out hit, distance+10);
-            Debug.DrawRay(bakerHead, movement, Color.red);
+        //    Debug.DrawRay(bakerHead, movement, Color.red);
             //if ray hits Player, moves at [speed] towards 'player'
             if (hit.collider == playerCollider)
             {
@@ -101,7 +101,7 @@ public class BakerAI : MonoBehaviour {
                 //rb.AddForce(mov / mov.magnitude * speed);
                 rb.velocity = mov.normalized * speed * Time.deltaTime;
                 transform.LookAt(new Vector3(player.transform.position.x, 0f, player.transform.position.z));
-                Debug.Log("I see you!");
+            //    Debug.Log("I see you!");
             }
             //if !Player, sets 'chase' to false; stop moving
             else
@@ -110,12 +110,12 @@ public class BakerAI : MonoBehaviour {
                 if (lastTimeSeen + giveUpTimer < Time.time)
                 {
                     chasing = false;
-                    Debug.Log("I'm giving up!");
+           //         Debug.Log("I'm giving up!");
                 }
                 //else move to last place player was seen
                 else
                 {
-                    Debug.Log("I dont see you but im coming!");
+             //       Debug.Log("I dont see you but im coming!");
                     movement = lastPlaceSeen - transform.position;
 
                     if ((transform.position - lastPosition).magnitude < stuckAmount)

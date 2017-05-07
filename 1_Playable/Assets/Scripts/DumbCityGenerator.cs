@@ -13,7 +13,24 @@ public class DumbCityGenerator : MonoBehaviour
     public GameObject asphaltObj;
     public GameObject sidewalkObj;
     public GameObject buildingObj;
-    public GameObject carObj;
+    public GameObject buildingObj1;
+    public GameObject buildingObj2;
+    public GameObject buildingObj3;
+    public GameObject buildingObj4;
+    public GameObject buildingObj5;
+    public GameObject buildingObj6;
+    public GameObject buildingObj7;
+    public GameObject buildingObj8;
+    public GameObject buildingObj9;
+
+   // public GameObject carObj;
+    
+    // NPC Variables
+    public GameObject[] randomSpawnNPC;
+    public static NodeController[] nodeCtrlArray;
+    public NodeController[] readArray;
+    public NodeController[,] nodeCtrlMatrix;
+
     public GameObject trashcanObj;
     public GameObject crateObj;
 
@@ -35,7 +52,7 @@ public class DumbCityGenerator : MonoBehaviour
     
     List<Street> streets;
 
-    List<GameObject> cars;
+    //List<GameObject> cars;
 
     //b
     private float wallLengthStart;
@@ -43,10 +60,13 @@ public class DumbCityGenerator : MonoBehaviour
     public float wallPadding = 10;
     private float wallPadSquare;
 
+    private int RandomBuilding;
+    private int longBuilding = 0;
+
     public void GenerateSquareCity()
     {
         GenerateBlockGrid(blocksWide);
-        GenerateCars(40);
+   //     GenerateCars(40);
         wallLengthStart = blocksWide * blockSize;
         wallWidthStart = blocksWide * blockSize;
         wallPadSquare = wallPadding * wallPadding;
@@ -55,11 +75,21 @@ public class DumbCityGenerator : MonoBehaviour
         outsideStreet.transform.parent = transform;
         outsideStreet.transform.localScale = new Vector3(asphaltObj.transform.localScale.x*blocksWide+3.5f, 1f, asphaltObj.transform.localScale.x*blocksWide+3.5f);
         outsideStreet.name = "outsideStreet";
-        // var outsideSW = Instantiate(sidewalkObj);
-        // outsideSW.transform.localScale = new Vector3(sidewalkObj.transform.localScale.x * blocksWide * blockSize, 0.4f, 3.5f);
-        // outsideSW.name = "outsideSW";
-
+        
         GeneratePerimeter();
+
+        // count nodes and add to array
+        nodeCtrlArray = GetComponentsInChildren<NodeController>();
+        nodeCtrlMatrix = new NodeController[blocksWide, blocksWide];
+        for (int i = 0; i < blocksWide; ++i)
+        {
+            int k = i + blocksWide * blocksWide - blocksWide;
+            for (int j = 0; j < blocksWide; ++j)
+            {
+                nodeCtrlMatrix[i, j] = nodeCtrlArray[k];
+                k -= blocksWide;
+            }
+        }
     }
 
     public void ClearCity()
@@ -90,6 +120,7 @@ public class DumbCityGenerator : MonoBehaviour
     void GenerateBlock(float x, float z)
     {
         var center = new Vector3(x, 0f, z);
+        //Debug.Log("This is the Block Location X:  " + x + " and Y:  " + z);
 
         var block = new GameObject("Block");
         block.transform.position = center;
@@ -98,9 +129,9 @@ public class DumbCityGenerator : MonoBehaviour
         // generate the road and sidwalk
 
         // commented out due to giant asphalt covering the rest of the ground
-       // var asphalt = Instantiate(asphaltObj);
-       // asphalt.transform.parent = block.transform;
-       // asphalt.transform.position = center;
+        // var asphalt = Instantiate(asphaltObj);
+        // asphalt.transform.parent = block.transform;
+        // asphalt.transform.position = center;
 
         var sidewalk = Instantiate(sidewalkObj);
         sidewalk.transform.parent = block.transform;
@@ -109,71 +140,256 @@ public class DumbCityGenerator : MonoBehaviour
         // generate buildings
         // place the 4 corner buildings first
 
-        var building1 = Instantiate(buildingObj);
+
+        var building1 = new GameObject();
+        if (TallBuildingChances(x, z))
+            RandomBuilding = Random.Range(6, 10);
+        else
+         RandomBuilding = Random.Range(0, 6);            /// Randomizes the Type Of Building 
+       // Debug.Log(RandomBuilding);
+        switch (RandomBuilding)
+        {
+            
+            case 0:
+                building1 = Instantiate(buildingObj);
+                break;
+            case 1:
+                building1 = Instantiate(buildingObj1);
+                break;
+            case 2:
+                building1 = Instantiate(buildingObj2);
+                break;
+            case 3:
+                building1 = Instantiate(buildingObj3);
+                break;
+            case 4:
+                building1 = Instantiate(buildingObj4);
+                break;
+            case 5:
+                building1 = Instantiate(buildingObj5);
+                longBuilding = 1;
+                break;
+            case 6:
+                building1 = Instantiate(buildingObj6);
+                break;
+            case 7:
+                building1 = Instantiate(buildingObj7);
+                break;
+            case 8:
+                building1 = Instantiate(buildingObj8);
+                break;
+            case 9:
+                building1 = Instantiate(buildingObj9);
+                break;
+        }
         building1.transform.parent = block.transform;
-        var width = Random.Range(minBuildingSize.x, maxBuildingSize.x);
-        var height = Random.Range(minBuildingSize.y, maxBuildingSize.y);
-        var depth = Random.Range(minBuildingSize.z, maxBuildingSize.z);
-        building1.transform.localScale = new Vector3(width, height, depth);
-        building1.transform.localPosition = new Vector3(
-            -buildingPadding + (width / 2),
-            (height / 2),
-            -buildingPadding + (depth / 2));
+        building1.transform.localScale = new Vector3(1, 1, 1);
+        building1.transform.localPosition = new Vector3(15, 0, 15);
+        building1.transform.Rotate(0, 270, 0);
 
-        
-        var building2 = Instantiate(buildingObj);
+
+        var building2 = new GameObject();
+        if (TallBuildingChances(x, z))
+            RandomBuilding = Random.Range(6, 10);
+        else
+            RandomBuilding = Random.Range(0, 6);
+        switch (RandomBuilding)
+        {
+            case 0:
+                building2 = Instantiate(buildingObj);
+                break;
+            case 1:
+                building2 = Instantiate(buildingObj1);
+                break;
+            case 2:
+                building2 = Instantiate(buildingObj2);
+                break;
+            case 3:
+                building2 = Instantiate(buildingObj3);
+                break;
+            case 4:
+                building2 = Instantiate(buildingObj4);
+                break;
+            case 5:
+                if (longBuilding == 0)
+                {
+                    building2 = Instantiate(buildingObj5);
+                    longBuilding = 2;  
+                }
+                break;
+            case 6:
+                building2 = Instantiate(buildingObj6);
+                break;
+            case 7:
+                building2 = Instantiate(buildingObj7);
+                break;
+            case 8:
+                building2 = Instantiate(buildingObj8);
+                break;
+            case 9:
+                building2 = Instantiate(buildingObj9);
+                break;
+        }
+
         building2.transform.parent = block.transform;
-        width = Random.Range(minBuildingSize.x, maxBuildingSize.x);
-        height = Random.Range(minBuildingSize.y, maxBuildingSize.y);
-        depth = Random.Range(minBuildingSize.z, maxBuildingSize.z);
-        building2.transform.localScale = new Vector3(width, height, depth);
-        building2.transform.localPosition = new Vector3(
-            -buildingPadding + (width / 2),
-            (height / 2),
-            buildingPadding - (depth / 2));
+        building2.transform.localScale = new Vector3(1, 1, 1);
+        building2.transform.localPosition = new Vector3(15, 0, -15);
+        building2.transform.Rotate(0, 0, 0);
 
 
+        var building3 = new GameObject();
+        if(TallBuildingChances(x, z))
+            RandomBuilding = Random.Range(6, 10);
+        else
+         RandomBuilding = Random.Range(0, 6);
+        switch (RandomBuilding)
+        {
+            case 0:
+                building3 = Instantiate(buildingObj);
+                break;
+            case 1:
+                building3 = Instantiate(buildingObj1);
+                break;
+            case 2:
+                building3 = Instantiate(buildingObj2);
+                break;
+            case 3:
+                building3 = Instantiate(buildingObj3);
+                break;
+            case 4:
+                building3 = Instantiate(buildingObj4);
+                break;
+            case 5:
+                if (longBuilding == 0)
+                {
+                    building3 = Instantiate(buildingObj5);
+                    longBuilding = 3;
+                }
+                break;
+            case 6:
+                building3 = Instantiate(buildingObj6);
+                break;
+            case 7:
+                building3 = Instantiate(buildingObj7);
+                break;
+            case 8:
+                building3 = Instantiate(buildingObj8);
+                break;
+            case 9:
+                building3 = Instantiate(buildingObj9);
+                break;
 
-        var building3 = Instantiate(buildingObj);
+        }
         building3.transform.parent = block.transform;
-        width = Random.Range(minBuildingSize.x, maxBuildingSize.x);
-        height = Random.Range(minBuildingSize.y, maxBuildingSize.y);
-        depth = Random.Range(minBuildingSize.z, maxBuildingSize.z);
-        building3.transform.localScale = new Vector3(width, height, depth);
-        building3.transform.localPosition = new Vector3(
-            buildingPadding - (width / 2),
-            (height / 2),
-            -buildingPadding + (depth / 2));
+        building3.transform.localScale = new Vector3(1, 1, 1);
+        building3.transform.localPosition = new Vector3(-15, 0, -15);
+        building3.transform.Rotate(0, 90, 0);
 
-        var building4 = Instantiate(buildingObj);
+        var building4 = new GameObject();
+        if (TallBuildingChances(x, z))
+            RandomBuilding = Random.Range(6, 10);
+        else
+            RandomBuilding = Random.Range(0, 6);
+        switch (RandomBuilding)
+        {
+            case 0:
+                building4 = Instantiate(buildingObj);
+                break;
+            case 1:
+                building4 = Instantiate(buildingObj1);
+                break;
+            case 2:
+                building4 = Instantiate(buildingObj2);
+                break;
+            case 3:
+                building4 = Instantiate(buildingObj3);
+                break;
+            case 4:
+                building4 = Instantiate(buildingObj4);
+                break;
+            case 5:
+                if (longBuilding == 0)
+                {
+
+                    building4 = Instantiate(buildingObj5);
+                    longBuilding = 4;
+                }
+                break;
+            case 6:
+                building4 = Instantiate(buildingObj6);
+                break;
+            case 7:
+                building4 = Instantiate(buildingObj7);
+                break;
+            case 8:
+                building4 = Instantiate(buildingObj8);
+                break;
+            case 9:
+                building4 = Instantiate(buildingObj9);
+
+                break;
+        }
         building4.transform.parent = block.transform;
-        width = Random.Range(minBuildingSize.x, maxBuildingSize.x);
-        height = Random.Range(minBuildingSize.y, maxBuildingSize.y);
-        depth = Random.Range(minBuildingSize.z, maxBuildingSize.z);
-        building4.transform.localScale = new Vector3(width, height, depth);
-        building4.transform.localPosition = new Vector3(
-            buildingPadding - (width / 2),
-            (height / 2),
-            buildingPadding - (depth / 2));
+        building4.transform.localScale = new Vector3(1, 1, 1);
+        building4.transform.localPosition = new Vector3(-15, 0, 15);
+        building4.transform.Rotate(0, 180, 0);
+
 
         // place alley debris
-        PlaceAlleyStuff(block,
-            new Vector3(-buildingPadding, 0f, -buildingPadding + building1.transform.localScale.z),
-            new Vector3(-buildingPadding + building2.transform.localScale.x, 0f, buildingPadding - building2.transform.localScale.z));
+       
+            PlaceAlleyStuff(block,
+                new Vector3(-buildingPadding, 0f, -buildingPadding + building1.transform.localScale.z),
+                new Vector3(-buildingPadding + building2.transform.localScale.x, 0f, buildingPadding - building2.transform.localScale.z));
+               
+            PlaceAlleyStuff(block,
+                new Vector3(-buildingPadding + building1.transform.localScale.x, 0f, -buildingPadding),
+                new Vector3(buildingPadding - building3.transform.localScale.x, 0f, -buildingPadding + building3.transform.localScale.z));
 
-        PlaceAlleyStuff(block,
-            new Vector3(-buildingPadding + building1.transform.localScale.x, 0f, -buildingPadding),
-            new Vector3(buildingPadding - building3.transform.localScale.x, 0f, -buildingPadding + building3.transform.localScale.z));
+            PlaceAlleyStuff(block,
+                new Vector3(-buildingPadding + building2.transform.localScale.x, 0f, buildingPadding - building2.transform.localScale.z),
+                new Vector3(buildingPadding - building4.transform.localScale.x, 0f, buildingPadding));
 
-        PlaceAlleyStuff(block,
-            new Vector3(-buildingPadding + building2.transform.localScale.x, 0f, buildingPadding - building2.transform.localScale.z),
-            new Vector3(buildingPadding - building4.transform.localScale.x, 0f, buildingPadding));
+            PlaceAlleyStuff(block,
+                new Vector3(buildingPadding - building3.transform.localScale.x, 0f, -buildingPadding + building3.transform.localScale.z),
+                new Vector3(buildingPadding, 0f, buildingPadding - building4.transform.localScale.z));
 
-        PlaceAlleyStuff(block,
-            new Vector3(buildingPadding - building3.transform.localScale.x, 0f, -buildingPadding + building3.transform.localScale.z),
-            new Vector3(buildingPadding, 0f, buildingPadding - building4.transform.localScale.z));
+
+       /* MeshRenderer render = building1.GetComponentInChildren<MeshRenderer>();
+        render.enabled = false;
+        MeshRenderer render1 = building1.GetComponentInChildren<MeshRenderer>();
+        render1.enabled = false;
+        MeshRenderer render2 = building1.GetComponentInChildren<MeshRenderer>();
+        render2.enabled = false;
+        MeshRenderer render3 = building1.GetComponentInChildren<MeshRenderer>();
+        render3.enabled = false; 
+        */
+
+
+        switch (longBuilding)
+        {
+            case 1:
+                building1.transform.localPosition = new Vector3(15,0,0);
+                Destroy(building2);
+                break;
+            case 2:
+                building2.transform.localPosition = new Vector3(0, 0, -15);
+                Destroy(building3);
+                break;
+            case 3:
+                building3.transform.localPosition = new Vector3(-15, 0, 0);
+                Destroy(building4);
+                break;
+            case 4:
+                building4.transform.localPosition = new Vector3(0, 0, 15);
+                Destroy(building1);
+                break;
+        }
+
+        longBuilding = 0;
+
+       
+
         
-
 
         // set street info
         var northStreet = new Street();
@@ -230,6 +446,8 @@ public class DumbCityGenerator : MonoBehaviour
         }
 
 
+
+
     }
 
     void PlaceAlleyStuff(GameObject block, Vector3 topLeft, Vector3 bottomRight)
@@ -256,7 +474,7 @@ public class DumbCityGenerator : MonoBehaviour
         }
     }
 
-    void GenerateCars(int numCars)
+   /* void GenerateCars(int numCars)
     {
         cars = new List<GameObject>();
 
@@ -273,7 +491,7 @@ public class DumbCityGenerator : MonoBehaviour
             streets[i].start.z);
             cars.Add(car);
         }
-    }
+    } */
 
     public Street GetStreetWithStart(Vector3 startPos)
     {
@@ -329,7 +547,7 @@ public class DumbCityGenerator : MonoBehaviour
 
         var wall = Instantiate(buildingObj);
         wall.transform.parent = peri.transform;
-        wall.transform.localScale = new Vector3(wallLength, Random.Range(minBuildingSize.y, maxBuildingSize.y), wallDepth);
+        wall.transform.localScale = new Vector3(1, 1, 1);// (wallLength, Random.Range(minBuildingSize.y, maxBuildingSize.y), wallDepth);
         wall.transform.position = new Vector3(posX, wall.transform.localScale.y / 2, posZ);
 
         //Debug.Log("adding wall block");
@@ -371,4 +589,16 @@ public class DumbCityGenerator : MonoBehaviour
     {
 
     }
+
+    bool TallBuildingChances(float x, float y)
+    {
+        bool chance;
+        if (x > Random.Range(-80,-200) && y > Random.Range(-80, -200) && x < Random.Range(80,200) && y < Random.Range(80,200))
+            chance = true;
+        else
+            chance = false;
+ 
+        return chance;
+    }
+    
 }

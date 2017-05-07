@@ -1,0 +1,16 @@
+Male Adult	Neutral	Hello there, little one.
+Any NPC	Neutral	Hello.
+Male Child	Neutral	Hey guy! Got any food?
+Male Child	Excited	Woah, nice socks!
+Male Adult	Aggressive	You smell like my gym bag. Go take a bath!
+Male Adult	Sympathetic	Where are your parents?
+Male Adult	Happy	You are one energetic lad, aren't cha?
+Male Adult	Aggressive	Do you know who I am?
+Any NPC	Aggressive	Outta the way, kid.
+Any NPC	Aggressive	Hmph!
+Male Child	Happy	Well waddaya know, it's time to leave!
+Male Child	Sympathetic	Life ain't fair for rats like us.
+Male Child	Sympathetic	Know where I can get an easy loaf? I'm starvin'...
+Any NPC	Excited	Hey!
+Male Child	Depressed	Where's my mama...?
+Male Adult	Depressed	Not today, lad...
