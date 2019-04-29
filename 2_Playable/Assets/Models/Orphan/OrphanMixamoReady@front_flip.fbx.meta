@@ -114,7 +114,7 @@ ModelImporter:
     - serializedVersion: 16
       name: front_flip
       takeName: mixamo.com
-      firstFrame: 15
+      firstFrame: 11
       lastFrame: 50
       wrapMode: 0
       orientationOffsetY: 0

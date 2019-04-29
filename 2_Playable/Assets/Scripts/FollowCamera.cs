@@ -35,76 +35,81 @@ public class FollowCamera : MonoBehaviour
 
         angleOffset = new Vector3(angleOffset.x, angleOffset.y, angleOffset.z);
     }
-    
+
+    public float autoRotateSpeed;
+    public float timeToAutoFollow;
+    float lastMove;
+
+    Vector2 oldMouseDelta;
+
     void Update()
     {
         if(Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
-            //dist += 0.2f;
+            dist += 0.2f;
         }
         else if(Input.GetAxis("Mouse ScrollWheel") < 0f)
         {
-            //dist -= 0.2f;
+            dist -= 0.2f;
         }
-
 
         var targetOrientation = Quaternion.Euler(targetDirection);
 
         // Get raw mouse input for a cleaner reading on more sensitive mice.
         var mouseDelta = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
 
-        // Scale input against the sensitivity setting and multiply that against the smoothing value.
-        mouseDelta = Vector2.Scale(mouseDelta, new Vector2(sensitivity.x * smoothingV.x, sensitivity.y * smoothingV.y));
+        if (mouseDelta != oldMouseDelta)
+            lastMove = Time.time;
+        else
+        {
+            //Debug.Log("No camera movement");
+        }
 
-        // Interpolate mouse movement over time to apply smoothing delta.
-        _smoothMouse.x = Mathf.Lerp(_smoothMouse.x, mouseDelta.x, 1f / smoothingV.x);
-        _smoothMouse.y = Mathf.Lerp(_smoothMouse.y, mouseDelta.y, 1f / smoothingV.y);
+        oldMouseDelta = mouseDelta;
+        /*
+        if(Time.time > lastMove + timeToAutoFollow)
+        {
+            var targetRotationY = Mathf.Lerp(transform.localRotation.eulerAngles.y, target.rotation.eulerAngles.y, Time.deltaTime * autoRotateSpeed);
+            
+            var tarRot = Quaternion.Euler(transform.localRotation.eulerAngles.x, targetRotationY, transform.localRotation.eulerAngles.z);
+            transform.localRotation = tarRot;//Quaternion.Lerp(transform.localRotation, tarRot, Time.deltaTime * autoRotateSpeed);
+        }
+        else
+        {*/
+            // Scale input against the sensitivity setting and multiply that against the smoothing value.
+            mouseDelta = Vector2.Scale(mouseDelta, new Vector2(sensitivity.x * smoothingV.x, sensitivity.y * smoothingV.y));
 
-        // Find the absolute mouse movement value from point zero.
-        _mouseAbsolute += _smoothMouse;
+            // Interpolate mouse movement over time to apply smoothing delta.
+            _smoothMouse.x = Mathf.Lerp(_smoothMouse.x, mouseDelta.x, 1f / smoothingV.x);
+            _smoothMouse.y = Mathf.Lerp(_smoothMouse.y, mouseDelta.y, 1f / smoothingV.y);
 
-        // Clamp and apply the local x value first, so as not to be affected by world transforms.
-        if (clampInDegrees.x < 360)
-            _mouseAbsolute.x = Mathf.Clamp(_mouseAbsolute.x, -clampInDegrees.x * 0.5f, clampInDegrees.x * 0.5f);
+            // Find the absolute mouse movement value from point zero.
+            _mouseAbsolute += _smoothMouse;
 
-        // Then clamp and apply the global y value.
-        if (clampInDegrees.y < 360)
-            _mouseAbsolute.y = Mathf.Clamp(_mouseAbsolute.y, -clampInDegrees.y * 0.5f, clampInDegrees.y * 0.5f);
+            // Clamp and apply the local x value first, so as not to be affected by world transforms.
+            if (clampInDegrees.x < 360)
+                _mouseAbsolute.x = Mathf.Clamp(_mouseAbsolute.x, -clampInDegrees.x * 0.5f, clampInDegrees.x * 0.5f);
 
-        var xRotation = Quaternion.AngleAxis(-_mouseAbsolute.y, targetOrientation * Vector3.right);
-        transform.localRotation = xRotation * targetOrientation;
+            // Then clamp and apply the global y value.
+            if (clampInDegrees.y < 360)
+                _mouseAbsolute.y = Mathf.Clamp(_mouseAbsolute.y, -clampInDegrees.y * 0.5f, clampInDegrees.y * 0.5f);
 
-        var zRotation = Quaternion.AngleAxis(_mouseAbsolute.x, transform.InverseTransformDirection(Vector3.up));
-        transform.localRotation *= zRotation;
+            var xRotation = Quaternion.AngleAxis(-_mouseAbsolute.y, targetOrientation * Vector3.right);
+            transform.localRotation = xRotation * targetOrientation;
 
-        var tarPos = new Vector3(0f, 3f, 0f) + target.position;
+            var zRotation = Quaternion.AngleAxis(_mouseAbsolute.x, transform.InverseTransformDirection(Vector3.up));
+            transform.localRotation *= zRotation;
+           
+
+        var tarPos = new Vector3(0f, 1f, 0f) + target.position;
 
         Vector3 position = new Vector3(offset.x, offset.y, -dist * 2) + tarPos;// target.position ;
-        //Vector3 position = new Vector3(offset.x, offset.y, -dist) + target.position;
-        //transform.position = Vector3.Lerp(transform.position, position, smoothing * Time.deltaTime);
-        //transform.position = position;
-
-        
 
         position = RotatePointAroundPivot(position,
-                                tarPos,//target.position,
+                                tarPos,
                                 transform.localRotation);
 
         transform.position = position;
-        //transform.position = Vector3.Lerp(transform.position, position, smoothing * Time.deltaTime);
-
-        if (transform.position.y < 0.5f)
-        {
-            transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
-        }
-
-        //Debug.DrawLine(transform.position, tarPos, Color.red);
-        //Debug.DrawRay(transform.position, target.position, Color.green);
-
-        // dbug stuff
-        //var flatPosition = new Vector3(transform.position.x, 0f, transform.position.z);
-        //flatDistance = (flatPosition - target.position).magnitude;
-
     }
     public float flatDistance;
 
